@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Platform</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+        }
+
+        header {
+            background: #111;
+            color: white;
+            padding: 18px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        nav {
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+        }
+
+        nav button {
+            border: none;
+            background: none;
+            font-size: 16px;
+        }
+
+        .upload-box {
+            background: white;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .upload-box h2 {
+            margin-top: 0;
+        }
+
+        .upload-button {
+            background: #111;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .feed {
+            margin: 20px;
+        }
+
+        .post {
+            background: white;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .post h3 {
+            margin-top: 0;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .actions {
+            margin-top: 12px;
+        }
+
+        .actions button {
+            border: none;
+            background: #eee;
+            padding: 8px 14px;
+            border-radius: 8px;
+            margin-right: 5px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>🔥 My Platform</h1>
+
+    <p>Share your world</p>
+
+</header>
+
+<nav>
+
+    <button>🏠 Home</button>
+
+    <button>📤 Upload</button>
+
+    <button>👤 Profile</button>
+
+</nav>
+
+<div class="upload-box">
+
+    <h2>📤 Upload</h2>
+
+    <p>Share an image or video with everyone.</p>
+
+    <input type="file" accept="image/*,video/*">
+
+    <br>
+
+    <button class="upload-button">
+        Upload
+    </button>
+
+</div>
+
+<div class="feed">
+
+    <h2>🔥 Latest Posts</h2>
+
+    <div class="post">
+
+        <h3>👤 Demo User</h3>
+
+        <p>Welcome to My Platform!</p>
+
+        <div class="actions">
+
+            <button>❤️ Like</button>
+
+            <button>💬 Comment</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
