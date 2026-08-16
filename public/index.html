@@ -1,608 +1,708 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>My Platform</title>
+<title>My Platform</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #0b0b0b;
+    --surface: #151515;
+    --surface-hover: #242424;
+    --text: #ffffff;
+    --muted: #999999;
+    --border: #2c2c2c;
+    --accent: #ff2d55;
+}
 
-        :root {
-            --bg: #0f0f0f;
-            --surface: #181818;
-            --surface-hover: #272727;
-            --text: #ffffff;
-            --muted: #aaaaaa;
-            --border: #303030;
-            --accent: #ff2d55;
-        }
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-        body {
-            margin: 0;
-            background: var(--bg);
-            color: var(--text);
-            font-family: Arial, Helvetica, sans-serif;
-        }
+button,
+input {
+    font: inherit;
+}
 
-        button,
-        input {
-            font: inherit;
-        }
+button {
+    cursor: pointer;
+}
 
-        button {
-            cursor: pointer;
-        }
+/* =========================
+   TOP BAR
+========================= */
 
-        /* =========================
-           TOP BAR
-        ========================= */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
 
-        .topbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+    height: 64px;
 
-            height: 64px;
+    background: rgba(11,11,11,0.97);
+    border-bottom: 1px solid var(--border);
 
-            background: rgba(15, 15, 15, 0.96);
-            border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
 
-            display: flex;
-            align-items: center;
+    padding: 0 20px;
 
-            padding: 0 20px;
+    z-index: 1000;
+}
 
-            z-index: 1000;
-        }
+.menu-button {
+    width: 42px;
+    height: 42px;
 
-        .menu-button {
-            width: 42px;
-            height: 42px;
+    border: none;
+    background: transparent;
+    color: white;
 
-            border: none;
-            background: transparent;
-            color: white;
+    border-radius: 50%;
+    font-size: 22px;
+}
 
-            border-radius: 50%;
+.menu-button:hover {
+    background: var(--surface-hover);
+}
 
-            font-size: 22px;
-        }
+.logo {
+    margin-left: 12px;
 
-        .menu-button:hover {
-            background: var(--surface-hover);
-        }
+    font-size: 22px;
+    font-weight: 800;
 
-        .logo {
-            margin-left: 12px;
+    white-space: nowrap;
+}
 
-            font-size: 22px;
-            font-weight: 800;
+.logo span {
+    color: var(--accent);
+}
 
-            white-space: nowrap;
-        }
+/* =========================
+   SEARCH
+========================= */
 
-        .logo span {
-            color: var(--accent);
-        }
+.search-container {
+    flex: 1;
 
-        /* SEARCH */
+    display: flex;
+    justify-content: center;
 
-        .search-container {
-            flex: 1;
+    margin-left: 40px;
+    margin-right: 30px;
+}
 
-            display: flex;
-            justify-content: center;
+.search-box {
+    width: min(600px, 100%);
+    display: flex;
+}
 
-            margin-left: 40px;
-            margin-right: 30px;
-        }
+.search-input {
+    flex: 1;
 
-        .search-box {
-            width: min(600px, 100%);
+    height: 42px;
 
-            display: flex;
-        }
+    background: #111;
+    border: 1px solid #3d3d3d;
 
-        .search-input {
-            flex: 1;
+    border-radius: 22px 0 0 22px;
 
-            height: 42px;
+    padding: 0 18px;
 
-            background: #121212;
-            border: 1px solid #3f3f3f;
+    color: white;
+    outline: none;
+}
 
-            border-radius: 22px 0 0 22px;
+.search-input:focus {
+    border-color: #777;
+}
 
-            padding: 0 18px;
+.search-input::placeholder {
+    color: #777;
+}
 
-            color: white;
+.search-button {
+    width: 64px;
 
-            outline: none;
-        }
+    border: 1px solid #3d3d3d;
+    border-left: none;
 
-        .search-input:focus {
-            border-color: #777;
-        }
+    background: #222;
+    color: white;
 
-        .search-input::placeholder {
-            color: #888;
-        }
+    border-radius: 0 22px 22px 0;
+    font-size: 18px;
+}
 
-        .search-button {
-            width: 64px;
+.search-button:hover {
+    background: #303030;
+}
 
-            border: 1px solid #3f3f3f;
-            border-left: none;
+/* =========================
+   TOP ACTIONS
+========================= */
 
-            background: #222;
-            color: white;
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-            border-radius: 0 22px 22px 0;
+.top-button {
+    width: 42px;
+    height: 42px;
 
-            font-size: 18px;
-        }
+    border: none;
+    background: transparent;
 
-        .search-button:hover {
-            background: #303030;
-        }
+    color: white;
+    border-radius: 50%;
 
-        /* TOP ACTIONS */
+    font-size: 19px;
+}
 
-        .top-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+.top-button:hover {
+    background: var(--surface-hover);
+}
 
-        .top-button {
-            width: 42px;
-            height: 42px;
+.profile-button {
+    width: 38px;
+    height: 38px;
 
-            border: none;
-            background: transparent;
+    border: none;
+    border-radius: 50%;
 
-            color: white;
+    background: linear-gradient(135deg, #ff2d55, #7c3aed);
 
-            border-radius: 50%;
+    color: white;
+    font-weight: bold;
+}
 
-            font-size: 19px;
-        }
+/* =========================
+   SIDEBAR
+========================= */
 
-        .top-button:hover {
-            background: var(--surface-hover);
-        }
+.sidebar {
+    position: fixed;
 
-        .profile-button {
-            width: 38px;
-            height: 38px;
+    top: 64px;
+    left: 0;
+    bottom: 0;
 
-            border: none;
+    width: 230px;
 
-            border-radius: 50%;
+    background: var(--bg);
 
-            background: linear-gradient(135deg, #ff2d55, #7c3aed);
+    padding: 18px 12px;
 
-            color: white;
+    overflow-y: auto;
 
-            font-weight: bold;
-        }
+    border-right: 1px solid var(--border);
 
-        /* =========================
-           SIDEBAR
-        ========================= */
+    z-index: 900;
+}
 
-        .sidebar {
-            position: fixed;
+.sidebar-section {
+    padding-bottom: 16px;
+    margin-bottom: 16px;
 
-            top: 64px;
-            left: 0;
-            bottom: 0;
+    border-bottom: 1px solid var(--border);
+}
 
-            width: 230px;
+.sidebar-title {
+    color: var(--muted);
 
-            background: var(--bg);
+    font-size: 13px;
+    font-weight: bold;
 
-            padding: 18px 12px;
+    padding: 10px 14px;
 
-            overflow-y: auto;
+    text-transform: uppercase;
+}
 
-            border-right: 1px solid var(--border);
-        }
+.sidebar-item {
+    width: 100%;
 
-        .sidebar-section {
-            padding-bottom: 16px;
-            margin-bottom: 16px;
+    border: none;
+    background: transparent;
 
-            border-bottom: 1px solid var(--border);
-        }
+    color: #ddd;
 
-        .sidebar-title {
-            color: var(--muted);
+    text-align: left;
 
-            font-size: 13px;
-            font-weight: bold;
+    padding: 12px 14px;
 
-            padding: 10px 14px;
+    border-radius: 10px;
 
-            text-transform: uppercase;
-        }
+    margin-bottom: 3px;
+}
 
-        .sidebar-item {
-            width: 100%;
+.sidebar-item:hover {
+    background: var(--surface-hover);
+    color: white;
+}
 
-            border: none;
-            background: transparent;
+.sidebar-item.active {
+    background: var(--surface);
+    color: white;
+    font-weight: bold;
+}
 
-            color: #ddd;
+.sidebar-icon {
+    display: inline-block;
+    width: 30px;
+    font-size: 18px;
+}
 
-            text-align: left;
+/* =========================
+   LARGE TOP ADVERTISEMENT
+========================= */
 
-            padding: 12px 14px;
+.top-ad {
+    margin-left: 230px;
 
-            border-radius: 10px;
+    padding:
+        84px
+        25px
+        20px;
 
-            margin-bottom: 3px;
-        }
+    background: var(--bg);
+}
 
-        .sidebar-item:hover {
-            background: var(--surface-hover);
-            color: white;
-        }
+.ad-label {
+    width: 100%;
+    max-width: 1200px;
 
-        .sidebar-item.active {
-            background: var(--surface);
-            color: white;
-            font-weight: bold;
-        }
+    margin: 0 auto 8px;
 
-        .sidebar-icon {
-            display: inline-block;
+    color: #666;
 
-            width: 30px;
+    font-size: 10px;
+    text-align: center;
 
-            font-size: 18px;
-        }
+    letter-spacing: 1.5px;
+}
 
-        /* =========================
-           MAIN
-        ========================= */
+.ad-slot {
+    width: 100%;
+    max-width: 1200px;
 
-        .main {
-            margin-left: 230px;
+    height: 180px;
 
-            padding-top: 88px;
-            padding-left: 25px;
-            padding-right: 25px;
-            padding-bottom: 80px;
-        }
+    margin: auto;
 
-        .content {
-            max-width: 1500px;
-            margin: auto;
-        }
+    background: #121212;
 
-        /* CATEGORY BAR */
+    border: 1px dashed #3b3b3b;
 
-        .categories {
-            display: flex;
+    border-radius: 8px;
 
-            gap: 10px;
+    display: flex;
 
-            overflow-x: auto;
+    align-items: center;
+    justify-content: center;
 
-            padding-bottom: 20px;
+    color: #555;
 
-            scrollbar-width: none;
-        }
+    font-size: 14px;
 
-        .categories::-webkit-scrollbar {
-            display: none;
-        }
+    letter-spacing: 2px;
+}
 
-        .category {
-            border: none;
+/* =========================
+   MAIN
+========================= */
 
-            background: #272727;
+.main {
+    margin-left: 230px;
 
-            color: white;
+    padding:
+        10px
+        25px
+        80px;
+}
 
-            padding: 9px 16px;
+.content {
+    max-width: 1500px;
+    margin: auto;
+}
 
-            border-radius: 9px;
+/* =========================
+   CATEGORY BAR
+========================= */
 
-            white-space: nowrap;
+.categories {
+    display: flex;
 
-            font-size: 14px;
-        }
+    gap: 10px;
 
-        .category:hover {
-            background: #3a3a3a;
-        }
+    overflow-x: auto;
 
-        .category.active {
-            background: white;
-            color: black;
-        }
+    padding-bottom: 20px;
 
-        /* =========================
-           VIDEO GRID
-        ========================= */
+    scrollbar-width: none;
+}
 
-        .video-grid {
-            display: grid;
+.categories::-webkit-scrollbar {
+    display: none;
+}
 
-            grid-template-columns:
-                repeat(auto-fill, minmax(260px, 1fr));
+.category {
+    border: none;
 
-            gap: 34px 18px;
-        }
+    background: #272727;
 
-        /* VIDEO CARD */
+    color: white;
 
-        .video-card {
-            min-width: 0;
+    padding: 9px 16px;
 
-            cursor: pointer;
-        }
+    border-radius: 9px;
 
-        .thumbnail {
-            position: relative;
+    white-space: nowrap;
 
-            width: 100%;
+    font-size: 14px;
+}
 
-            aspect-ratio: 16 / 9;
+.category:hover {
+    background: #3a3a3a;
+}
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #241334,
-                    #3b1d5c,
-                    #151515
-                );
+.category.active {
+    background: white;
+    color: black;
+}
 
-            border-radius: 12px;
+/* =========================
+   FEATURED SECTION
+========================= */
 
-            overflow: hidden;
+.section-title {
+    margin: 10px 0 18px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    font-size: 22px;
+}
 
-            font-size: 45px;
+/* =========================
+   VIDEO GRID
+========================= */
 
-            transition: transform 0.18s;
-        }
+.video-grid {
+    display: grid;
 
-        .video-card:hover .thumbnail {
-            transform: scale(1.015);
-        }
+    grid-template-columns:
+        repeat(auto-fill, minmax(260px, 1fr));
 
-        .duration {
-            position: absolute;
+    gap: 34px 18px;
+}
 
-            right: 7px;
-            bottom: 7px;
+.video-card {
+    min-width: 0;
+    cursor: pointer;
+}
 
-            background: rgba(0, 0, 0, 0.85);
+/* =========================
+   THUMBNAIL
+========================= */
 
-            color: white;
+.thumbnail {
+    position: relative;
 
-            padding: 4px 6px;
+    width: 100%;
 
-            border-radius: 4px;
+    aspect-ratio: 16 / 9;
 
-            font-size: 12px;
-        }
+    background:
+        linear-gradient(
+            135deg,
+            #241334,
+            #3b1d5c,
+            #151515
+        );
 
-        .video-info {
-            display: flex;
+    border-radius: 12px;
 
-            gap: 12px;
+    overflow: hidden;
 
-            margin-top: 11px;
-        }
+    display: flex;
 
-        .channel-avatar {
-            flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
 
-            width: 38px;
-            height: 38px;
+    font-size: 45px;
 
-            border-radius: 50%;
+    transition: transform 0.18s;
+}
 
-            background:
-                linear-gradient(135deg, #ff2d55, #7c3aed);
+.video-card:hover .thumbnail {
+    transform: scale(1.015);
+}
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+.duration {
+    position: absolute;
 
-            font-size: 14px;
-            font-weight: bold;
-        }
+    right: 7px;
+    bottom: 7px;
 
-        .video-details {
-            min-width: 0;
-        }
+    background: rgba(0,0,0,0.85);
 
-        .video-title {
-            margin: 0;
+    color: white;
 
-            font-size: 15px;
+    padding: 4px 6px;
 
-            line-height: 1.4;
+    border-radius: 4px;
 
-            font-weight: 600;
+    font-size: 12px;
+}
 
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+/* =========================
+   VIDEO INFORMATION
+========================= */
 
-            overflow: hidden;
-        }
+.video-info {
+    display: flex;
 
-        .channel-name {
-            color: var(--muted);
+    gap: 12px;
 
-            font-size: 13px;
+    margin-top: 11px;
+}
 
-            margin-top: 7px;
-        }
+.channel-avatar {
+    flex-shrink: 0;
 
-        .video-meta {
-            color: var(--muted);
+    width: 38px;
+    height: 38px;
 
-            font-size: 12px;
+    border-radius: 50%;
 
-            margin-top: 3px;
-        }
+    background:
+        linear-gradient(
+            135deg,
+            #ff2d55,
+            #7c3aed
+        );
 
-        /* =========================
-           MOBILE NAVIGATION
-        ========================= */
+    display: flex;
 
-        .mobile-nav {
-            display: none;
-        }
+    align-items: center;
+    justify-content: center;
 
-        /* =========================
-           RESPONSIVE
-        ========================= */
+    font-size: 14px;
+    font-weight: bold;
+}
 
-        @media (max-width: 900px) {
+.video-details {
+    min-width: 0;
+}
 
-            .sidebar {
-                width: 76px;
-            }
+.video-title {
+    margin: 0;
 
-            .sidebar-text,
-            .sidebar-title {
-                display: none;
-            }
+    font-size: 15px;
 
-            .sidebar-item {
-                text-align: center;
-                padding: 14px 5px;
-            }
+    line-height: 1.4;
 
-            .sidebar-icon {
-                width: auto;
-                font-size: 21px;
-            }
+    font-weight: 600;
 
-            .main {
-                margin-left: 76px;
-            }
+    display: -webkit-box;
 
-        }
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 
-        @media (max-width: 650px) {
+    overflow: hidden;
+}
 
-            .topbar {
-                padding: 0 10px;
-            }
+.channel-name {
+    color: var(--muted);
 
-            .menu-button {
-                display: none;
-            }
+    font-size: 13px;
 
-            .logo {
-                margin-left: 0;
-                font-size: 19px;
-            }
+    margin-top: 7px;
+}
 
-            .search-container {
-                margin: 0 10px;
-            }
+.video-meta {
+    color: var(--muted);
 
-            .search-input {
-                height: 38px;
-            }
+    font-size: 12px;
 
-            .search-button {
-                height: 38px;
-                width: 50px;
-            }
+    margin-top: 3px;
+}
 
-            .top-actions {
-                gap: 2px;
-            }
+/* =========================
+   MOBILE NAV
+========================= */
 
-            .top-button {
-                display: none;
-            }
+.mobile-nav {
+    display: none;
+}
 
-            .sidebar {
-                display: none;
-            }
+/* =========================
+   RESPONSIVE
+========================= */
 
-            .main {
-                margin-left: 0;
+@media (max-width: 900px) {
 
-                padding: 78px 10px 80px;
-            }
+    .sidebar {
+        width: 76px;
+    }
 
-            .video-grid {
-                grid-template-columns: 1fr;
+    .sidebar-text,
+    .sidebar-title {
+        display: none;
+    }
 
-                gap: 28px;
-            }
+    .sidebar-item {
+        text-align: center;
+        padding: 14px 5px;
+    }
 
-            .thumbnail {
-                border-radius: 9px;
-            }
+    .sidebar-icon {
+        width: auto;
+        font-size: 21px;
+    }
 
-            .mobile-nav {
-                position: fixed;
+    .top-ad {
+        margin-left: 76px;
+    }
 
-                display: flex;
+    .main {
+        margin-left: 76px;
+    }
+}
 
-                left: 0;
-                right: 0;
-                bottom: 0;
+@media (max-width: 650px) {
 
-                height: 64px;
+    .topbar {
+        padding: 0 10px;
+    }
 
-                background: rgba(18, 18, 18, 0.97);
+    .menu-button {
+        display: none;
+    }
 
-                border-top: 1px solid var(--border);
+    .logo {
+        margin-left: 0;
+        font-size: 19px;
+    }
 
-                z-index: 2000;
+    .search-container {
+        margin: 0 10px;
+    }
 
-                justify-content: space-around;
-                align-items: center;
-            }
+    .search-input {
+        height: 38px;
+    }
 
-            .mobile-nav button {
-                border: none;
+    .search-button {
+        height: 38px;
+        width: 50px;
+    }
 
-                background: transparent;
+    .top-actions {
+        gap: 2px;
+    }
 
-                color: var(--muted);
+    .top-button {
+        display: none;
+    }
 
-                font-size: 20px;
-            }
+    .sidebar {
+        display: none;
+    }
 
-            .mobile-nav button span {
-                display: block;
+    /* MOBILE AD */
 
-                font-size: 10px;
+    .top-ad {
+        margin-left: 0;
 
-                margin-top: 3px;
-            }
+        padding:
+            74px
+            10px
+            15px;
+    }
 
-            .mobile-nav button.active {
-                color: white;
-            }
+    .ad-slot {
+        height: 140px;
+    }
 
-        }
+    /* MAIN */
 
-    </style>
+    .main {
+        margin-left: 0;
+
+        padding:
+            10px
+            10px
+            80px;
+    }
+
+    .video-grid {
+        grid-template-columns: 1fr;
+
+        gap: 28px;
+    }
+
+    .thumbnail {
+        border-radius: 9px;
+    }
+
+    /* MOBILE NAV */
+
+    .mobile-nav {
+        position: fixed;
+
+        display: flex;
+
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        height: 64px;
+
+        background:
+            rgba(18,18,18,0.97);
+
+        border-top: 1px solid var(--border);
+
+        z-index: 2000;
+
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .mobile-nav button {
+        border: none;
+
+        background: transparent;
+
+        color: var(--muted);
+
+        font-size: 20px;
+    }
+
+    .mobile-nav button span {
+        display: block;
+
+        font-size: 10px;
+
+        margin-top: 3px;
+    }
+
+    .mobile-nav button.active {
+        color: white;
+    }
+}
+</style>
 </head>
 
 <body>
@@ -629,7 +729,7 @@
                 class="search-input"
                 id="searchInput"
                 type="search"
-                placeholder="Search"
+                placeholder="Search videos..."
             >
 
             <button
@@ -674,28 +774,21 @@
     <div class="sidebar-section">
 
         <button class="sidebar-item active">
-
             <span class="sidebar-icon">🏠</span>
             <span class="sidebar-text">Home</span>
-
         </button>
 
         <button class="sidebar-item">
-
             <span class="sidebar-icon">🎬</span>
-            <span class="sidebar-text">Shorts</span>
-
+            <span class="sidebar-text">Short Videos</span>
         </button>
 
         <button class="sidebar-item">
-
             <span class="sidebar-icon">📺</span>
             <span class="sidebar-text">Subscriptions</span>
-
         </button>
 
     </div>
-
 
     <div class="sidebar-section">
 
@@ -704,35 +797,26 @@
         </div>
 
         <button class="sidebar-item">
-
             <span class="sidebar-icon">👤</span>
-            <span class="sidebar-text">Your channel</span>
-
+            <span class="sidebar-text">Your Channel</span>
         </button>
 
         <button class="sidebar-item">
-
             <span class="sidebar-icon">🕘</span>
             <span class="sidebar-text">History</span>
-
         </button>
 
         <button class="sidebar-item">
-
             <span class="sidebar-icon">📚</span>
             <span class="sidebar-text">Playlists</span>
-
         </button>
 
         <button class="sidebar-item">
-
             <span class="sidebar-icon">⏱️</span>
-            <span class="sidebar-text">Watch later</span>
-
+            <span class="sidebar-text">Watch Later</span>
         </button>
 
     </div>
-
 
     <div class="sidebar-section">
 
@@ -741,36 +825,50 @@
         </div>
 
         <button class="sidebar-item">
-
             <span class="sidebar-icon">🔥</span>
             <span class="sidebar-text">Trending</span>
-
         </button>
 
         <button class="sidebar-item">
-
             <span class="sidebar-icon">🎮</span>
             <span class="sidebar-text">Gaming</span>
-
         </button>
 
         <button class="sidebar-item">
-
-            <span class="sidebar-icon">🎵</span>
-            <span class="sidebar-text">Music</span>
-
-        </button>
-
-        <button class="sidebar-item">
-
             <span class="sidebar-icon">💻</span>
             <span class="sidebar-text">Technology</span>
+        </button>
 
+        <button class="sidebar-item">
+            <span class="sidebar-icon">🤖</span>
+            <span class="sidebar-text">AI</span>
+        </button>
+
+        <button class="sidebar-item">
+            <span class="sidebar-icon">🔬</span>
+            <span class="sidebar-text">Science</span>
         </button>
 
     </div>
 
 </aside>
+
+
+<!-- =========================
+     LARGE AD AREA
+========================= -->
+
+<section class="top-ad">
+
+    <div class="ad-label">
+        ADVERTISEMENT
+    </div>
+
+    <div class="ad-slot">
+        AD SPACE
+    </div>
+
+</section>
 
 
 <!-- =========================
@@ -781,7 +879,7 @@
 
     <div class="content">
 
-        <!-- CATEGORY BAR -->
+        <!-- CATEGORIES -->
 
         <div class="categories">
 
@@ -795,10 +893,6 @@
 
             <button class="category">
                 Technology
-            </button>
-
-            <button class="category">
-                Music
             </button>
 
             <button class="category">
@@ -820,14 +914,17 @@
         </div>
 
 
+        <h2 class="section-title">
+            Recommended Videos
+        </h2>
+
+
         <!-- VIDEO GRID -->
 
         <section
             class="video-grid"
             id="videoGrid"
         >
-
-            <!-- VIDEO 1 -->
 
             <article class="video-card">
 
@@ -866,8 +963,6 @@
             </article>
 
 
-            <!-- VIDEO 2 -->
-
             <article class="video-card">
 
                 <div class="thumbnail">
@@ -904,8 +999,6 @@
 
             </article>
 
-
-            <!-- VIDEO 3 -->
 
             <article class="video-card">
 
@@ -944,8 +1037,6 @@
             </article>
 
 
-            <!-- VIDEO 4 -->
-
             <article class="video-card">
 
                 <div class="thumbnail">
@@ -982,8 +1073,6 @@
 
             </article>
 
-
-            <!-- VIDEO 5 -->
 
             <article class="video-card">
 
@@ -1022,114 +1111,34 @@
             </article>
 
 
-            <!-- VIDEO 6 -->
-
-            <article class="video-card">
-
-                <div class="thumbnail">
-                    🎵
-
-                    <span class="duration">
-                        04:28
-                    </span>
-                </div>
-
-                <div class="video-info">
-
-                    <div class="channel-avatar">
-                        M
-                    </div>
-
-                    <div class="video-details">
-
-                        <h3 class="video-title">
-                            New Music Mix — Summer 2026
-                        </h3>
-
-                        <div class="channel-name">
-                            Music Station
-                        </div>
-
-                        <div class="video-meta">
-                            4.1M views · 1 day ago
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- VIDEO 7 -->
-
             <article class="video-card">
 
                 <div class="thumbnail">
                     🧠
 
                     <span class="duration">
-                        16:55
+                        15:24
                     </span>
                 </div>
 
                 <div class="video-info">
 
                     <div class="channel-avatar">
-                        L
+                        F
                     </div>
 
                     <div class="video-details">
 
                         <h3 class="video-title">
-                            Amazing Things You Didn't Know About the Brain
+                            Amazing New Ideas in Computer Science
                         </h3>
 
                         <div class="channel-name">
-                            Learn More
+                            Future Lab
                         </div>
 
                         <div class="video-meta">
-                            923K views · 4 days ago
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- VIDEO 8 -->
-
-            <article class="video-card">
-
-                <div class="thumbnail">
-                    🌍
-
-                    <span class="duration">
-                        14:20
-                    </span>
-                </div>
-
-                <div class="video-info">
-
-                    <div class="channel-avatar">
-                        T
-                    </div>
-
-                    <div class="video-details">
-
-                        <h3 class="video-title">
-                            Exploring the Most Incredible Places on Earth
-                        </h3>
-
-                        <div class="channel-name">
-                            Travel World
-                        </div>
-
-                        <div class="video-meta">
-                            3.7M views · 6 days ago
+                            624K views · 4 days ago
                         </div>
 
                     </div>
@@ -1146,44 +1155,34 @@
 
 
 <!-- =========================
-     MOBILE NAV
+     MOBILE NAVIGATION
 ========================= -->
 
 <nav class="mobile-nav">
 
     <button class="active">
-
         🏠
         <span>Home</span>
-
     </button>
 
     <button>
-
-        🎬
-        <span>Shorts</span>
-
-    </button>
-
-    <button onclick="uploadVideo()">
-
-        ➕
-        <span>Create</span>
-
+        🔥
+        <span>Trending</span>
     </button>
 
     <button>
+        ⬆️
+        <span>Upload</span>
+    </button>
 
+    <button>
         📺
-        <span>Subscriptions</span>
-
+        <span>Library</span>
     </button>
 
     <button>
-
         👤
-        <span>You</span>
-
+        <span>Profile</span>
     </button>
 
 </nav>
@@ -1191,56 +1190,90 @@
 
 <script>
 
-    function searchVideos() {
+/* =========================
+   SEARCH
+========================= */
 
-        const input =
-            document.getElementById("searchInput");
+function searchVideos() {
 
-        const query =
-            input.value.trim();
+    const input =
+        document.getElementById("searchInput");
 
-        if (query === "") {
-            alert("Please enter something to search.");
-            return;
+    const query =
+        input.value.trim().toLowerCase();
+
+    const cards =
+        document.querySelectorAll(".video-card");
+
+    cards.forEach(card => {
+
+        const title =
+            card.querySelector(".video-title")
+                .textContent
+                .toLowerCase();
+
+        const channel =
+            card.querySelector(".channel-name")
+                .textContent
+                .toLowerCase();
+
+        if (
+            query === "" ||
+            title.includes(query) ||
+            channel.includes(query)
+        ) {
+            card.style.display = "";
+        } else {
+            card.style.display = "none";
         }
 
-        alert("Search for: " + query);
-
-    }
-
-
-    function uploadVideo() {
-
-        alert(
-            "Video uploading will be added in the next stage."
-        );
-
-    }
+    });
+}
 
 
-    document
-        .getElementById("searchInput")
-        .addEventListener("keydown", function(event) {
+/* SEARCH WITH ENTER */
 
-            if (event.key === "Enter") {
-                searchVideos();
-            }
+document
+    .getElementById("searchInput")
+    .addEventListener("keydown", function(event) {
 
-        });
+        if (event.key === "Enter") {
+            searchVideos();
+        }
+
+    });
 
 
-    const categories =
-        document.querySelectorAll(".category");
+/* =========================
+   UPLOAD
+========================= */
 
-    categories.forEach(function(category) {
+function uploadVideo() {
 
-        category.addEventListener("click", function() {
+    alert(
+        "Upload system will be connected to your backend."
+    );
 
-            categories.forEach(function(item) {
-                item.classList.remove("active");
-            });
+}
 
-            category.classList.add("active");
+
+/* =========================
+   CATEGORY BUTTONS
+========================= */
+
+document
+    .querySelectorAll(".category")
+    .forEach(button => {
+
+        button.addEventListener("click", function() {
+
+            document
+                .querySelectorAll(".category")
+                .forEach(btn =>
+                    btn.classList.remove("active")
+                );
+
+            this.classList.add("active");
 
         });
 
