@@ -6,7 +6,9 @@ app.get("/", (req, res) => {
     res.sendFile(__dirname + "/public/index.html");
 });
 
-app.listen(3000, "127.0.0.1", () => {
-    console.log("My Platform is running on port 3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`My Platform is running on port ${PORT}`);
 });
 
