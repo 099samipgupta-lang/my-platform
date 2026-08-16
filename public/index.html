@@ -1,162 +1,855 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>My Platform</title>
 
     <style>
-
         * {
             box-sizing: border-box;
         }
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f2f2f2;
+        :root {
+            --bg: #0b0b0f;
+            --surface: #141419;
+            --surface-2: #1b1b22;
+            --border: #292932;
+            --text: #f5f5f7;
+            --muted: #9999a5;
+            --accent: #7c5cff;
+            --accent-2: #a78bfa;
         }
 
-        header {
-            background: #111;
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        button {
+            font: inherit;
+            cursor: pointer;
+        }
+
+        /* TOP BAR */
+
+        .topbar {
+            height: 64px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 11, 15, 0.94);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--accent-2);
+        }
+
+        .search {
+            width: 360px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 11px 16px;
             color: white;
-            padding: 18px;
+            outline: none;
+        }
+
+        .search::placeholder {
+            color: var(--muted);
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: white;
+            border-radius: 50%;
+        }
+
+        /* LAYOUT */
+
+        .layout {
+            display: grid;
+            grid-template-columns: 230px minmax(0, 620px) 250px;
+            justify-content: center;
+            gap: 28px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 28px 20px 100px;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: sticky;
+            top: 92px;
+            height: fit-content;
+        }
+
+        .nav-item {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            text-align: left;
+            padding: 14px 15px;
+            margin-bottom: 5px;
+            border-radius: 12px;
+            font-size: 15px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--surface);
+            color: white;
+        }
+
+        .nav-icon {
+            display: inline-block;
+            width: 28px;
+        }
+
+        /* STORIES */
+
+        .stories {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+
+        .stories::-webkit-scrollbar {
+            display: none;
+        }
+
+        .story {
+            min-width: 76px;
             text-align: center;
         }
 
-        header h1 {
-            margin: 0;
+        .story-avatar {
+            width: 62px;
+            height: 62px;
+            margin: auto;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(135deg, #7c5cff, #ec4899);
         }
 
-        nav {
-            background: white;
+        .story-avatar div {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #24242c;
             display: flex;
-            justify-content: space-around;
-            padding: 15px;
-            position: sticky;
-            top: 0;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
         }
 
-        nav button {
-            border: none;
-            background: none;
-            font-size: 16px;
+        .story-name {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 7px;
         }
 
-        .upload-box {
-            background: white;
-            margin: 20px;
-            padding: 20px;
-            border-radius: 12px;
+        /* CREATE POST */
+
+        .composer {
+            margin-top: 20px;
+            padding: 18px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
         }
 
-        .upload-box h2 {
-            margin-top: 0;
+        .composer-top {
+            display: flex;
+            gap: 12px;
+            align-items: center;
         }
 
-        .upload-button {
-            background: #111;
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c5cff, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .composer-input {
+            flex: 1;
+            border: 1px solid var(--border);
+            background: var(--surface-2);
             color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            margin-top: 10px;
+            border-radius: 22px;
+            padding: 12px 16px;
         }
 
-        .feed {
-            margin: 20px;
+        .composer-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
         }
+
+        .composer-actions button {
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            padding: 8px 10px;
+            border-radius: 10px;
+        }
+
+        .composer-actions button:hover {
+            background: var(--surface-2);
+            color: white;
+        }
+
+        /* POST */
 
         .post {
-            background: white;
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 12px;
+            margin-top: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
         }
 
-        .post h3 {
-            margin-top: 0;
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+        }
+
+        .post-user {
+            flex: 1;
+        }
+
+        .post-user strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .post-user span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .more {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 20px;
+        }
+
+        .post-content {
+            padding: 0 16px 15px;
+            line-height: 1.5;
+            color: #dddde5;
         }
 
         .post-image {
             width: 100%;
-            border-radius: 10px;
+            height: 360px;
+            object-fit: cover;
+            background:
+                linear-gradient(135deg, #19152b, #30205c, #141419);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
         }
 
-        .actions {
-            margin-top: 12px;
+        .post-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 14px 4px;
         }
 
-        .actions button {
+        .post-actions button {
             border: none;
-            background: #eee;
-            padding: 8px 14px;
-            border-radius: 8px;
-            margin-right: 5px;
+            background: transparent;
+            color: #d5d5dc;
+            padding: 8px;
+            font-size: 20px;
+            border-radius: 9px;
         }
 
-    </style>
+        .post-actions button:hover {
+            background: var(--surface-2);
+        }
 
+        .save {
+            margin-left: auto;
+        }
+
+        .likes {
+            padding: 2px 16px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .caption {
+            padding: 8px 16px 17px;
+            font-size: 14px;
+            color: #d7d7df;
+        }
+
+        /* RIGHT PANEL */
+
+        .right-panel {
+            position: sticky;
+            top: 92px;
+            height: fit-content;
+        }
+
+        .profile-mini,
+        .suggestions {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px;
+        }
+
+        .profile-mini {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .profile-info span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .switch {
+            border: none;
+            background: none;
+            color: var(--accent-2);
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .suggestions {
+            margin-top: 18px;
+        }
+
+        .suggestions h3 {
+            margin-top: 0;
+            font-size: 14px;
+        }
+
+        .suggestion {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .suggestion .avatar {
+            width: 36px;
+            height: 36px;
+            font-size: 12px;
+        }
+
+        .suggestion-info {
+            flex: 1;
+        }
+
+        .suggestion-info strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .suggestion-info span {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .follow {
+            border: none;
+            color: var(--accent-2);
+            background: transparent;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* MOBILE NAV */
+
+        .mobile-nav {
+            display: none;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1000px) {
+            .layout {
+                grid-template-columns: 80px minmax(0, 620px);
+            }
+
+            .sidebar {
+                text-align: center;
+            }
+
+            .nav-item {
+                text-align: center;
+            }
+
+            .nav-text {
+                display: none;
+            }
+
+            .right-panel {
+                display: none;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .topbar {
+                height: 58px;
+                padding: 0 15px;
+            }
+
+            .search {
+                display: none;
+            }
+
+            .layout {
+                display: block;
+                padding: 15px 10px 80px;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .stories {
+                margin-bottom: 5px;
+            }
+
+            .composer {
+                margin-top: 10px;
+            }
+
+            .post {
+                border-radius: 15px;
+            }
+
+            .post-image {
+                height: 300px;
+            }
+
+            .mobile-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 62px;
+                background: rgba(20, 20, 25, 0.96);
+                backdrop-filter: blur(18px);
+                border-top: 1px solid var(--border);
+                z-index: 200;
+                justify-content: space-around;
+                align-items: center;
+            }
+
+            .mobile-nav button {
+                border: none;
+                background: none;
+                color: var(--muted);
+                font-size: 20px;
+            }
+
+            .mobile-nav button.active {
+                color: white;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<header>
+<header class="topbar">
 
-    <h1>🔥 My Platform</h1>
+    <div class="logo">
+        My<span>Platform</span>
+    </div>
 
-    <p>Share your world</p>
+    <input
+        class="search"
+        type="search"
+        placeholder="Search My Platform..."
+    >
+
+    <div class="top-actions">
+        <button class="icon-btn">🔔</button>
+        <button class="icon-btn">✉️</button>
+    </div>
 
 </header>
 
-<nav>
 
-    <button>🏠 Home</button>
+<div class="layout">
 
-    <button>📤 Upload</button>
+    <!-- SIDEBAR -->
 
-    <button>👤 Profile</button>
+    <aside class="sidebar">
 
-</nav>
+        <button class="nav-item active">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-text">Home</span>
+        </button>
 
-<div class="upload-box">
+        <button class="nav-item">
+            <span class="nav-icon">🔍</span>
+            <span class="nav-text">Explore</span>
+        </button>
 
-    <h2>📤 Upload</h2>
+        <button class="nav-item">
+            <span class="nav-icon">🎬</span>
+            <span class="nav-text">Videos</span>
+        </button>
 
-    <p>Share an image or video with everyone.</p>
+        <button class="nav-item">
+            <span class="nav-icon">💬</span>
+            <span class="nav-text">Messages</span>
+        </button>
 
-    <input type="file" accept="image/*,video/*">
+        <button class="nav-item">
+            <span class="nav-icon">❤️</span>
+            <span class="nav-text">Activity</span>
+        </button>
 
-    <br>
+        <button class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span class="nav-text">Profile</span>
+        </button>
 
-    <button class="upload-button">
-        Upload
-    </button>
+    </aside>
 
-</div>
 
-<div class="feed">
+    <!-- MAIN FEED -->
 
-    <h2>🔥 Latest Posts</h2>
+    <main>
 
-    <div class="post">
+        <!-- STORIES -->
 
-        <h3>👤 Demo User</h3>
+        <div class="stories">
 
-        <p>Welcome to My Platform!</p>
+            <div class="story">
+                <div class="story-avatar">
+                    <div>＋</div>
+                </div>
+                <div class="story-name">Your story</div>
+            </div>
 
-        <div class="actions">
+            <div class="story">
+                <div class="story-avatar">
+                    <div>😎</div>
+                </div>
+                <div class="story-name">Alex</div>
+            </div>
 
-            <button>❤️ Like</button>
+            <div class="story">
+                <div class="story-avatar">
+                    <div>🎨</div>
+                </div>
+                <div class="story-name">Maya</div>
+            </div>
 
-            <button>💬 Comment</button>
+            <div class="story">
+                <div class="story-avatar">
+                    <div>🚀</div>
+                </div>
+                <div class="story-name">Ryan</div>
+            </div>
+
+            <div class="story">
+                <div class="story-avatar">
+                    <div>🎮</div>
+                </div>
+                <div class="story-name">Gaming</div>
+            </div>
+
+            <div class="story">
+                <div class="story-avatar">
+                    <div>🌎</div>
+                </div>
+                <div class="story-name">Travel</div>
+            </div>
 
         </div>
 
-    </div>
+
+        <!-- CREATE POST -->
+
+        <section class="composer">
+
+            <div class="composer-top">
+
+                <div class="avatar">S</div>
+
+                <input
+                    class="composer-input"
+                    type="text"
+                    placeholder="What's on your mind?"
+                >
+
+            </div>
+
+            <div class="composer-actions">
+
+                <button>📷 Photo</button>
+                <button>🎬 Video</button>
+                <button>😊 Feeling</button>
+                <button>📍 Location</button>
+
+            </div>
+
+        </section>
+
+
+        <!-- POST -->
+
+        <article class="post">
+
+            <div class="post-header">
+
+                <div class="avatar">A</div>
+
+                <div class="post-user">
+                    <strong>Alex Johnson</strong>
+                    <span>@alexjohnson · 2h</span>
+                </div>
+
+                <button class="more">•••</button>
+
+            </div>
+
+            <div class="post-content">
+                Exploring new ideas and building something amazing. 🚀
+            </div>
+
+            <div class="post-image">
+                🚀
+            </div>
+
+            <div class="post-actions">
+
+                <button onclick="likePost(this)">♡</button>
+                <button>💬</button>
+                <button>↗</button>
+                <button class="save">🔖</button>
+
+            </div>
+
+            <div class="likes">
+                <span class="like-count">1,248</span> likes
+            </div>
+
+            <div class="caption">
+                <strong>Alex Johnson</strong>
+                Building the future one idea at a time. 🔥
+            </div>
+
+        </article>
+
+
+        <!-- SECOND POST -->
+
+        <article class="post">
+
+            <div class="post-header">
+
+                <div class="avatar">M</div>
+
+                <div class="post-user">
+                    <strong>Maya Wilson</strong>
+                    <span>@mayawilson · 5h</span>
+                </div>
+
+                <button class="more">•••</button>
+
+            </div>
+
+            <div class="post-image">
+                🌌
+            </div>
+
+            <div class="post-actions">
+
+                <button onclick="likePost(this)">♡</button>
+                <button>💬</button>
+                <button>↗</button>
+                <button class="save">🔖</button>
+
+            </div>
+
+            <div class="likes">
+                <span class="like-count">864</span> likes
+            </div>
+
+            <div class="caption">
+                <strong>Maya Wilson</strong>
+                Sometimes you just need to look up. ✨
+            </div>
+
+        </article>
+
+    </main>
+
+
+    <!-- RIGHT PANEL -->
+
+    <aside class="right-panel">
+
+        <div class="profile-mini">
+
+            <div class="avatar">S</div>
+
+            <div class="profile-info">
+                <strong>Samip Gupta</strong>
+                <span>@samip</span>
+            </div>
+
+            <button class="switch">View</button>
+
+        </div>
+
+
+        <div class="suggestions">
+
+            <h3>Suggested for you</h3>
+
+            <div class="suggestion">
+
+                <div class="avatar">J</div>
+
+                <div class="suggestion-info">
+                    <strong>James Lee</strong>
+                    <span>Suggested for you</span>
+                </div>
+
+                <button class="follow">Follow</button>
+
+            </div>
+
+
+            <div class="suggestion">
+
+                <div class="avatar">L</div>
+
+                <div class="suggestion-info">
+                    <strong>Luna Smith</strong>
+                    <span>Suggested for you</span>
+                </div>
+
+                <button class="follow">Follow</button>
+
+            </div>
+
+
+            <div class="suggestion">
+
+                <div class="avatar">D</div>
+
+                <div class="suggestion-info">
+                    <strong>Daniel Kim</strong>
+                    <span>Suggested for you</span>
+                </div>
+
+                <button class="follow">Follow</button>
+
+            </div>
+
+        </div>
+
+    </aside>
 
 </div>
+
+
+<!-- MOBILE NAV -->
+
+<nav class="mobile-nav">
+
+    <button class="active">🏠</button>
+    <button>🔍</button>
+    <button>➕</button>
+    <button>❤️</button>
+    <button>👤</button>
+
+</nav>
+
+
+<script>
+
+    function likePost(button) {
+
+        const post = button.closest(".post");
+        const count = post.querySelector(".like-count");
+
+        let likes = parseInt(count.textContent.replace(",", ""));
+
+        if (button.dataset.liked === "true") {
+
+            likes--;
+            button.textContent = "♡";
+            button.dataset.liked = "false";
+
+        } else {
+
+            likes++;
+            button.textContent = "♥";
+            button.dataset.liked = "true";
+
+        }
+
+        count.textContent = likes.toLocaleString();
+    }
+
+</script>
 
 </body>
 </html>
