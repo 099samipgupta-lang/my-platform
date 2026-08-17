@@ -220,10 +220,15 @@ form.addEventListener("submit", async (event) => {
         });
 
     if (error) {
-        message.textContent =
-            error.message;
-        return;
-    }
+    console.error("SIGNUP ERROR:", error);
+    alert(
+        "SIGNUP ERROR:\n" +
+        error.message
+    );
+    message.textContent =
+        error.message;
+    return;
+}
 
     if (!data.user) {
     message.textContent =
