@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Playlists - MyPlatform</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #0f0f0f;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    height: 64px;
+    background: #181818;
+    border-bottom: 1px solid #292929;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 18px;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.back {
+    background: transparent;
+    border: none;
+    color: white;
+
+    font-size: 28px;
+    cursor: pointer;
+
+    margin-right: 15px;
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.logo span {
+    color: #ff1744;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 28px 18px 70px;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+.page-title {
+    font-size: 27px;
+    margin: 0;
+}
+
+.create-button {
+    border: none;
+    background: #ff1744;
+    color: white;
+
+    padding: 11px 17px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.create-button:hover {
+    opacity: 0.9;
+}
+
+.status {
+    text-align: center;
+    color: #999;
+    padding: 60px 20px;
+}
+
+.playlist-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(240px, 1fr)
+        );
+
+    gap: 18px;
+}
+
+.playlist-card {
+    background: #181818;
+
+    border: 1px solid #292929;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    min-height: 150px;
+
+    cursor: pointer;
+
+    transition: transform 0.15s;
+}
+
+.playlist-card:hover {
+    transform: translateY(-2px);
+}
+
+.playlist-icon {
+    font-size: 38px;
+
+    margin-bottom: 14px;
+}
+
+.playlist-name {
+    font-size: 18px;
+
+    font-weight: bold;
+
+    margin-bottom: 8px;
+}
+
+.playlist-description {
+    color: #999;
+
+    font-size: 14px;
+
+    line-height: 1.4;
+}
+
+.playlist-date {
+    color: #666;
+
+    font-size: 12px;
+
+    margin-top: 14px;
+}
+
+@media(max-width: 650px) {
+
+    .top {
+        align-items: flex-start;
+    }
+
+    .page-title {
+        font-size: 23px;
+    }
+
+    .create-button {
+        padding: 9px 12px;
+    }
+
+    .playlist-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <button
+        class="back"
+        onclick="window.location.href='/profile.html'"
+    >
+        ←
+    </button>
+
+    <div
+        class="logo"
+        onclick="window.location.href='/'"
+    >
+        My<span>Platform</span>
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <div class="top">
+
+        <h1 class="page-title">
+            📋 Playlists
+        </h1>
+
+        <button
+            class="create-button"
+            id="createButton"
+        >
+            + Create
+        </button>
+
+    </div>
+
+
+    <div
+        id="status"
+        class="status"
+    >
+        Loading playlists...
+    </div>
+
+
+    <div
+        id="playlistGrid"
+        class="playlist-grid"
+        style="display:none;"
+    >
+    </div>
+
+</main>
+
+
+<script type="module">
+
+import {
+    createClient
+}
+from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+
+const SUPABASE_URL =
+"https://xhqhnafxwblskgjrveqy.supabase.co";
+
+
+const SUPABASE_KEY =
+"sb_publishable_vH0tiWjZW5z6l_5kANO_ig_Y3odvC3-";
+
+
+const supabase =
+createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+const status =
+document.getElementById(
+    "status"
+);
+
+
+const playlistGrid =
+document.getElementById(
+    "playlistGrid"
+);
+
+
+const createButton =
+document.getElementById(
+    "createButton"
+);
+
+
+/* HTML SAFETY */
+
+function escapeHtml(
+    value
+) {
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+}
+
+
+/* LOAD PLAYLISTS */
+
+async function loadPlaylists() {
+
+    const {
+        data: userData,
+        error: userError
+    } =
+    await supabase.auth.getUser();
+
+
+    if (
+        userError ||
+        !userData.user
+    ) {
+
+        window.location.href =
+        "/login.html";
+
+        return;
+    }
+
+
+    const userId =
+    userData.user.id;
+
+
+    const {
+        data: playlists,
+        error: playlistsError
+    } =
+    await supabase
+        .from("playlists")
+        .select(
+            "id, name, description, created_at"
+        )
+        .eq(
+            "user_id",
+            userId
+        )
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (playlistsError) {
+
+        console.error(
+            playlistsError
+        );
+
+        status.textContent =
+            "Could not load playlists: " +
+            playlistsError.message;
+
+        return;
+    }
+
+
+    /*
+       No playlists yet.
+    */
+
+    if (
+        !playlists ||
+        playlists.length === 0
+    ) {
+
+        status.textContent =
+            "You haven't created any playlists yet.";
+
+        return;
+    }
+
+
+    status.style.display =
+        "none";
+
+    playlistGrid.style.display =
+        "grid";
+
+
+    playlists.forEach(
+        playlist => {
+
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+            card.className =
+                "playlist-card";
+
+
+            card.innerHTML =
+                `
+                <div class="playlist-icon">
+                    📋
+                </div>
+
+                <div class="playlist-name">
+                    ${escapeHtml(
+                        playlist.name ||
+                        "Untitled playlist"
+                    )}
+                </div>
+
+                <div class="playlist-description">
+                    ${escapeHtml(
+                        playlist.description ||
+                        "No description"
+                    )}
+                </div>
+
+                <div class="playlist-date">
+                    Created ${
+                        new Date(
+                            playlist.created_at
+                        ).toLocaleDateString()
+                    }
+                </div>
+                `;
+
+
+            /*
+               Playlist detail page
+               will be added later.
+            */
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    alert(
+                        "Playlist page will be connected next."
+                    );
+
+                }
+            );
+
+
+            playlistGrid.appendChild(
+                card
+            );
+
+        }
+    );
+}
+
+
+/*
+   Create button.
+
+   The actual playlist creation
+   form will be built later.
+*/
+
+createButton.addEventListener(
+    "click",
+    () => {
+
+        alert(
+            "Playlist creation will be connected next."
+        );
+
+    }
+);
+
+
+loadPlaylists();
+
+</script>
+
+</body>
+</html>
