@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Saved Videos - MyPlatform</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #0f0f0f;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    height: 64px;
+    background: #181818;
+    border-bottom: 1px solid #292929;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 18px;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.back {
+    background: transparent;
+    border: none;
+    color: white;
+
+    font-size: 28px;
+    cursor: pointer;
+
+    margin-right: 15px;
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.logo span {
+    color: #ff1744;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 28px 18px 70px;
+}
+
+.page-title {
+    font-size: 27px;
+    margin: 0 0 22px;
+}
+
+.status {
+    text-align: center;
+    color: #999;
+    padding: 60px 20px;
+}
+
+.video-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(230px, 1fr)
+        );
+
+    gap: 18px;
+}
+
+.video-card {
+    background: #181818;
+
+    border: 1px solid #292929;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    transition: transform 0.15s;
+}
+
+.video-card:hover {
+    transform: translateY(-2px);
+}
+
+.thumbnail {
+    width: 100%;
+
+    aspect-ratio: 16 / 9;
+
+    object-fit: cover;
+
+    display: block;
+
+    background: #242424;
+}
+
+.video-info {
+    padding: 12px;
+}
+
+.video-title {
+    font-size: 16px;
+
+    font-weight: bold;
+
+    line-height: 1.35;
+}
+
+.video-meta {
+    color: #888;
+
+    font-size: 13px;
+
+    margin-top: 7px;
+}
+
+@media(max-width: 650px) {
+
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-title {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <button
+        class="back"
+        onclick="window.location.href='/profile.html'"
+    >
+        ←
+    </button>
+
+    <div
+        class="logo"
+        onclick="window.location.href='/'"
+    >
+        My<span>Platform</span>
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <h1 class="page-title">
+        💾 Saved Videos
+    </h1>
+
+    <div
+        id="status"
+        class="status"
+    >
+        Loading saved videos...
+    </div>
+
+    <div
+        id="videoGrid"
+        class="video-grid"
+        style="display:none;"
+    >
+    </div>
+
+</main>
+
+
+<script type="module">
+
+import {
+    createClient
+}
+from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+
+const SUPABASE_URL =
+"https://xhqhnafxwblskgjrveqy.supabase.co";
+
+
+const SUPABASE_KEY =
+"sb_publishable_vH0tiWjZW5z6l_5kANO_ig_Y3odvC3-";
+
+
+const supabase =
+createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+
+const status =
+document.getElementById(
+    "status"
+);
+
+
+const videoGrid =
+document.getElementById(
+    "videoGrid"
+);
+
+
+/* HTML SAFETY */
+
+function escapeHtml(
+    value
+) {
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+}
+
+
+/* LOAD SAVED VIDEOS */
+
+async function loadSavedVideos() {
+
+    const {
+        data: userData,
+        error: userError
+    } =
+    await supabase.auth.getUser();
+
+
+    if (
+        userError ||
+        !userData.user
+    ) {
+
+        window.location.href =
+        "/login.html";
+
+        return;
+    }
+
+
+    const userId =
+    userData.user.id;
+
+
+    /*
+       Get the user's
+       saved video IDs.
+    */
+
+    const {
+        data: saved,
+        error: savedError
+    } =
+    await supabase
+        .from("saved_videos")
+        .select(
+            "video_id, created_at"
+        )
+        .eq(
+            "user_id",
+            userId
+        )
+        .order(
+            "created_at",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (savedError) {
+
+        console.error(
+            savedError
+        );
+
+        status.textContent =
+            "Could not load saved videos: " +
+            savedError.message;
+
+        return;
+    }
+
+
+    /*
+       No saved videos yet.
+    */
+
+    if (
+        !saved ||
+        saved.length === 0
+    ) {
+
+        status.textContent =
+            "No saved videos yet.";
+
+        return;
+    }
+
+
+    const videoIds =
+        saved.map(
+            item =>
+                item.video_id
+        );
+
+
+    /*
+       Get the actual
+       video records.
+    */
+
+    const {
+        data: videos,
+        error: videosError
+    } =
+    await supabase
+        .from("videos")
+        .select(
+            "id, title, description, category, video_url, thumbnail_url, views, created_at"
+        )
+        .in(
+            "id",
+            videoIds
+        );
+
+
+    if (videosError) {
+
+        console.error(
+            videosError
+        );
+
+        status.textContent =
+            "Could not load videos: " +
+            videosError.message;
+
+        return;
+    }
+
+
+    /*
+       Preserve saved order.
+    */
+
+    const videoMap =
+        new Map(
+            videos.map(
+                video => [
+                    String(video.id),
+                    video
+                ]
+            )
+        );
+
+
+    const orderedVideos =
+        videoIds
+            .map(
+                id =>
+                    videoMap.get(
+                        String(id)
+                    )
+            )
+            .filter(
+                Boolean
+            );
+
+
+    if (
+        orderedVideos.length === 0
+    ) {
+
+        status.textContent =
+            "No saved videos yet.";
+
+        return;
+    }
+
+
+    status.style.display =
+        "none";
+
+    videoGrid.style.display =
+        "grid";
+
+
+    orderedVideos.forEach(
+        video => {
+
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+            card.className =
+                "video-card";
+
+
+            const thumbnail =
+                video.thumbnail_url ||
+                "https://via.placeholder.com/640x360?text=Video";
+
+
+            card.innerHTML =
+                `
+                <img
+                    class="thumbnail"
+                    src="${escapeHtml(thumbnail)}"
+                    alt=""
+                >
+
+                <div class="video-info">
+
+                    <div class="video-title">
+                        ${escapeHtml(
+                            video.title ||
+                            "Untitled video"
+                        )}
+                    </div>
+
+                    <div class="video-meta">
+                        ${Number(
+                            video.views || 0
+                        ).toLocaleString()}
+                        views
+                    </div>
+
+                </div>
+                `;
+
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    if (
+                        video.video_url
+                    ) {
+
+                        window.location.href =
+                            video.video_url;
+
+                    }
+
+                }
+            );
+
+
+            videoGrid.appendChild(
+                card
+            );
+
+        }
+    );
+}
+
+
+loadSavedVideos();
+
+</script>
+
+</body>
+</html>
