@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MyPlatform - Profile</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #0b0b0b;
+    --surface: #151515;
+    --surface-hover: #242424;
+    --text: #ffffff;
+    --muted: #999999;
+    --border: #2c2c2c;
+    --accent: #ff2d55;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* TOP BAR */
+
+.topbar {
+    height: 64px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 20px;
+
+    background: rgba(11,11,11,0.97);
+    border-bottom: 1px solid var(--border);
+
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.back-button {
+    border: none;
+    background: transparent;
+    color: white;
+
+    font-size: 22px;
+    cursor: pointer;
+
+    margin-right: 15px;
+}
+
+/* MAIN */
+
+.main {
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding:
+        100px
+        20px
+        80px;
+}
+
+/* PROFILE HEADER */
+
+.profile-header {
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    padding: 30px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 25px;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff2d55,
+            #7c3aed
+        );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 40px;
+    font-weight: bold;
+
+    flex-shrink: 0;
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.username {
+    margin: 0;
+
+    font-size: 28px;
+}
+
+.full-name {
+    color: var(--muted);
+
+    margin-top: 7px;
+}
+
+.bio {
+    margin-top: 12px;
+
+    color: #ccc;
+}
+
+.edit-button {
+    border: none;
+
+    background: white;
+    color: black;
+
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    background: #ddd;
+}
+
+/* PROFILE MENU */
+
+.profile-menu {
+    margin-top: 25px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+}
+
+.menu-item {
+    border: 1px solid var(--border);
+
+    background: var(--surface);
+
+    color: white;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: background 0.15s;
+}
+
+.menu-item:hover {
+    background: var(--surface-hover);
+}
+
+.menu-icon {
+    font-size: 25px;
+}
+
+.menu-title {
+    margin-top: 10px;
+
+    font-size: 17px;
+
+    font-weight: bold;
+}
+
+.menu-description {
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+/* LOGOUT */
+
+.logout {
+    margin-top: 25px;
+
+    width: 100%;
+
+    padding: 14px;
+
+    border: 1px solid #5a202b;
+
+    background: transparent;
+
+    color: #ff6b81;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.logout:hover {
+    background: #241215;
+}
+
+/* LOADING */
+
+.loading {
+    text-align: center;
+
+    padding: 50px;
+
+    color: var(--muted);
+}
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+
+    .topbar {
+        padding: 0 12px;
+    }
+
+    .profile-header {
+        padding: 22px;
+
+        flex-direction: column;
+
+        text-align: center;
+    }
+
+    .avatar {
+        width: 85px;
+        height: 85px;
+
+        font-size: 34px;
+    }
+
+    .username {
+        font-size: 24px;
+    }
+
+    .profile-menu {
+        grid-template-columns: 1fr;
+    }
+
+    .edit-button {
+        margin-top: 8px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <button
+        class="back-button"
+        onclick="window.location.href='/'"
+    >
+        ←
+    </button>
+
+    <div
+        class="logo"
+        onclick="window.location.href='/'"
+    >
+        My<span>Platform</span>
+    </div>
+
+</header>
+
+
+<main class="main">
+
+    <div
+        id="loading"
+        class="loading"
+    >
+        Loading profile...
+    </div>
+
+
+    <section
+        id="profileSection"
+        style="display:none;"
+    >
+
+        <div class="profile-header">
+
+            <div
+                class="avatar"
+                id="avatar"
+            >
+                ?
+            </div>
+
+            <div class="profile-info">
+
+                <h1
+                    class="username"
+                    id="username"
+                >
+                    User
+                </h1>
+
+                <div
+                    class="full-name"
+                    id="fullName"
+                >
+                </div>
+
+                <div
+                    class="bio"
+                    id="bio"
+                >
+                </div>
+
+            </div>
+
+            <button
+                class="edit-button"
+                onclick="editProfile()"
+            >
+                Edit Profile
+            </button>
+
+        </div>
+
+
+        <div class="profile-menu">
+
+            <button
+                class="menu-item"
+                onclick="openSection('history')"
+            >
+                <div class="menu-icon">🕘</div>
+
+                <div class="menu-title">
+                    History
+                </div>
+
+                <div class="menu-description">
+                    Videos you've watched
+                </div>
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="openSection('likes')"
+            >
+                <div class="menu-icon">👍</div>
+
+                <div class="menu-title">
+                    Liked Videos
+                </div>
+
+                <div class="menu-description">
+                    Videos you liked
+                </div>
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="openSection('saved')"
+            >
+                <div class="menu-icon">💾</div>
+
+                <div class="menu-title">
+                    Saved Videos
+                </div>
+
+                <div class="menu-description">
+                    Videos you've saved
+                </div>
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="openSection('watchlater')"
+            >
+                <div class="menu-icon">⏱️</div>
+
+                <div class="menu-title">
+                    Watch Later
+                </div>
+
+                <div class="menu-description">
+                    Videos to watch later
+                </div>
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="openSection('playlists')"
+            >
+                <div class="menu-icon">📋</div>
+
+                <div class="menu-title">
+                    Playlists
+                </div>
+
+                <div class="menu-description">
+                    Your saved playlists
+                </div>
+            </button>
+
+
+            <button
+                class="menu-item"
+                onclick="openSection('videos')"
+            >
+                <div class="menu-icon">🎬</div>
+
+                <div class="menu-title">
+                    Your Videos
+                </div>
+
+                <div class="menu-description">
+                    Videos you've uploaded
+                </div>
+            </button>
+
+        </div>
+
+
+        <button
+            class="logout"
+            onclick="logout()"
+        >
+            🚪 Log Out
+        </button>
+
+    </section>
+
+</main>
+
+
+<script type="module">
+
+import {
+    createClient
+} from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+
+const SUPABASE_URL =
+    "https://xhqhnafxwblskgjrveqy.supabase.co";
+
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_vH0tiWjZW5z6l_5kANO_ig_Y3odvC3-";
+
+
+const supabase =
+    createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
+
+
+async function loadProfile() {
+
+    const {
+        data: {
+            user
+        },
+        error: authError
+    } =
+        await supabase.auth.getUser();
+
+
+    if (
+        authError ||
+        !user
+    ) {
+
+        window.location.href =
+            "/login.html";
+
+        return;
+    }
+
+
+    const {
+        data: profile,
+        error
+    } =
+        await supabase
+            .from("profiles")
+            .select(
+                "username, full_name, avatar_url, bio"
+            )
+            .eq(
+                "id",
+                user.id
+            )
+            .single();
+
+
+    if (error) {
+
+        document.getElementById(
+            "loading"
+        ).textContent =
+            "Could not load profile.";
+
+        console.error(error);
+
+        return;
+    }
+
+
+    document.getElementById(
+        "username"
+    ).textContent =
+        "@" + (
+            profile.username ||
+            "user"
+        );
+
+
+    document.getElementById(
+        "fullName"
+    ).textContent =
+        profile.full_name || "";
+
+
+    document.getElementById(
+        "bio"
+    ).textContent =
+        profile.bio || "No bio yet.";
+
+
+    const avatar =
+        document.getElementById(
+            "avatar"
+        );
+
+
+    if (
+        profile.avatar_url
+    ) {
+
+        avatar.innerHTML =
+            `<img
+                src="${profile.avatar_url}"
+                style="
+                    width:100%;
+                    height:100%;
+                    border-radius:50%;
+                    object-fit:cover;
+                "
+            >`;
+
+    } else {
+
+        const name =
+            profile.username ||
+            "U";
+
+        avatar.textContent =
+            name
+                .charAt(0)
+                .toUpperCase();
+    }
+
+
+    document.getElementById(
+        "loading"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "profileSection"
+    ).style.display =
+        "block";
+}
+
+
+window.openSection =
+    function(section) {
+
+        alert(
+            section +
+            " section is ready to connect."
+        );
+
+    };
+
+
+window.editProfile =
+    function() {
+
+        alert(
+            "Edit Profile will be connected next."
+        );
+
+    };
+
+
+window.logout =
+    async function() {
+
+        await supabase.auth.signOut();
+
+        window.location.href =
+            "/login.html";
+    };
+
+
+loadProfile();
+
+</script>
+
+</body>
+</html>
