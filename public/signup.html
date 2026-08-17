@@ -229,22 +229,12 @@ form.addEventListener("submit", async (event) => {
         message.textContent =
             "Account could not be created.";
         return;
-    }
+    message.textContent =
+    "Account created successfully! Please check your email to confirm your account.";
 
-    const { error: profileError } =
-        await supabase
-            .from("profiles")
-            .insert({
-                id: data.user.id,
-                username: username
-            });
-
-    if (profileError) {
-        message.textContent =
-            "Account created, but profile setup failed: "
-            + profileError.message;
-        return;
-    }
+setTimeout(() => {
+    window.location.href = "/login.html";
+}, 2000);
 
     message.textContent =
         "Account created successfully!";
