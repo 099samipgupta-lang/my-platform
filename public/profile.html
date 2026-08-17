@@ -11,89 +11,71 @@
     box-sizing: border-box;
 }
 
-:root {
-    --bg: #0b0b0b;
-    --surface: #151515;
-    --surface-hover: #242424;
-    --text: #ffffff;
-    --muted: #999999;
-    --border: #2c2c2c;
-    --accent: #ff2d55;
-}
-
 body {
     margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
+    background: #0f0f0f;
+    color: white;
+    font-family: Arial, sans-serif;
 }
 
-/* TOP BAR */
-
-.topbar {
+header {
     height: 64px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    background: #181818;
+    border-bottom: 1px solid #292929;
 
     display: flex;
     align-items: center;
 
-    padding: 0 20px;
+    padding: 0 18px;
 
-    background: rgba(11,11,11,0.97);
-    border-bottom: 1px solid var(--border);
-
-    z-index: 1000;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.logo {
-    font-size: 22px;
-    font-weight: 800;
-    cursor: pointer;
-}
-
-.logo span {
-    color: var(--accent);
-}
-
-.back-button {
-    border: none;
+.back {
+    border: 0;
     background: transparent;
     color: white;
 
-    font-size: 22px;
+    font-size: 26px;
     cursor: pointer;
 
     margin-right: 15px;
 }
 
-/* MAIN */
-
-.main {
-    max-width: 1100px;
-
-    margin: 0 auto;
-
-    padding:
-        100px
-        20px
-        80px;
+.logo {
+    font-size: 21px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-/* PROFILE HEADER */
+.logo span {
+    color: #ff1744;
+}
 
-.profile-header {
-    background: var(--surface);
+.container {
+    width: 100%;
+    max-width: 1100px;
 
-    border: 1px solid var(--border);
+    margin: auto;
 
-    border-radius: 16px;
+    padding: 30px 18px 70px;
+}
 
-    padding: 30px;
+/* PROFILE */
+
+.profile-card {
+    background: #181818;
+
+    border: 1px solid #292929;
+
+    border-radius: 15px;
+
+    padding: 28px;
 
     display: flex;
+
     align-items: center;
 
     gap: 25px;
@@ -105,21 +87,30 @@ body {
 
     border-radius: 50%;
 
-    background:
-        linear-gradient(
-            135deg,
-            #ff2d55,
-            #7c3aed
-        );
+    background: linear-gradient(
+        135deg,
+        #ff1744,
+        #7c4dff
+    );
 
     display: flex;
-    align-items: center;
+
     justify-content: center;
+    align-items: center;
 
     font-size: 40px;
     font-weight: bold;
 
+    overflow: hidden;
+
     flex-shrink: 0;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
 }
 
 .profile-info {
@@ -133,22 +124,22 @@ body {
 }
 
 .full-name {
-    color: var(--muted);
+    color: #aaa;
 
-    margin-top: 7px;
+    margin-top: 8px;
 }
 
 .bio {
-    margin-top: 12px;
-
     color: #ccc;
+
+    margin-top: 12px;
 }
 
-.edit-button {
-    border: none;
-
+.edit {
     background: white;
     color: black;
+
+    border: none;
 
     padding: 10px 18px;
 
@@ -159,79 +150,240 @@ body {
     cursor: pointer;
 }
 
-.edit-button:hover {
-    background: #ddd;
-}
+/* MENU */
 
-/* PROFILE MENU */
-
-.profile-menu {
-    margin-top: 25px;
-
+.menu {
     display: grid;
 
     grid-template-columns:
         repeat(2, 1fr);
 
     gap: 12px;
+
+    margin-top: 25px;
 }
 
-.menu-item {
-    border: 1px solid var(--border);
+.menu-button {
+    background: #181818;
 
-    background: var(--surface);
-
-    color: white;
+    border: 1px solid #292929;
 
     border-radius: 12px;
+
+    color: white;
 
     padding: 20px;
 
     text-align: left;
 
     cursor: pointer;
-
-    transition: background 0.15s;
 }
 
-.menu-item:hover {
-    background: var(--surface-hover);
+.menu-button:hover {
+    background: #242424;
 }
 
-.menu-icon {
-    font-size: 25px;
+.icon {
+    font-size: 27px;
 }
 
-.menu-title {
+.title {
+    font-size: 17px;
+
+    font-weight: bold;
+
     margin-top: 10px;
+}
 
+.description {
+    color: #999;
+
+    font-size: 13px;
+
+    margin-top: 5px;
+}
+
+/* CONTENT */
+
+.content {
+    margin-top: 35px;
+}
+
+.content h2 {
+    margin-bottom: 18px;
+}
+
+.video-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(230px, 1fr)
+        );
+
+    gap: 18px;
+}
+
+.video-card {
+    background: #181818;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    border: 1px solid #292929;
+
+    cursor: pointer;
+}
+
+.thumbnail {
+    width: 100%;
+
+    aspect-ratio: 16 / 9;
+
+    background: #242424;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.video-info {
+    padding: 12px;
+}
+
+.video-title {
+    font-weight: bold;
+
+    line-height: 1.3;
+}
+
+.video-meta {
+    color: #888;
+
+    font-size: 13px;
+
+    margin-top: 7px;
+}
+
+/* PLAYLIST */
+
+.playlist {
+    background: #181818;
+
+    border: 1px solid #292929;
+
+    padding: 18px;
+
+    border-radius: 10px;
+
+    margin-bottom: 10px;
+}
+
+.playlist-name {
     font-size: 17px;
 
     font-weight: bold;
 }
 
-.menu-description {
-    margin-top: 5px;
+.playlist-description {
+    color: #999;
 
-    color: var(--muted);
+    margin-top: 6px;
 
-    font-size: 13px;
+    font-size: 14px;
+}
+
+/* EDIT */
+
+.edit-panel {
+    background: #181818;
+
+    border: 1px solid #292929;
+
+    border-radius: 12px;
+
+    padding: 22px;
+
+    margin-top: 25px;
+
+    display: none;
+}
+
+.edit-panel input,
+.edit-panel textarea {
+    width: 100%;
+
+    background: #0f0f0f;
+
+    color: white;
+
+    border: 1px solid #333;
+
+    border-radius: 8px;
+
+    padding: 12px;
+
+    margin-top: 7px;
+
+    margin-bottom: 15px;
+
+    font-family: inherit;
+}
+
+.edit-panel textarea {
+    min-height: 100px;
+
+    resize: vertical;
+}
+
+.save-profile {
+    background: #ff1744;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 11px 18px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.cancel {
+    background: #333;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 8px;
+
+    padding: 11px 18px;
+
+    cursor: pointer;
+
+    margin-left: 8px;
 }
 
 /* LOGOUT */
 
 .logout {
-    margin-top: 25px;
-
     width: 100%;
+
+    margin-top: 25px;
 
     padding: 14px;
 
-    border: 1px solid #5a202b;
-
     background: transparent;
 
-    color: #ff6b81;
+    color: #ff5270;
+
+    border: 1px solid #4b2029;
 
     border-radius: 10px;
 
@@ -240,65 +392,53 @@ body {
     font-weight: bold;
 }
 
-.logout:hover {
-    background: #241215;
-}
+.empty {
+    color: #999;
 
-/* LOADING */
+    padding: 30px 0;
+
+    text-align: center;
+}
 
 .loading {
     text-align: center;
 
-    padding: 50px;
+    color: #999;
 
-    color: var(--muted);
+    padding: 50px;
 }
 
 /* MOBILE */
 
-@media (max-width: 650px) {
+@media(max-width: 650px) {
 
-    .topbar {
-        padding: 0 12px;
-    }
-
-    .profile-header {
-        padding: 22px;
-
+    .profile-card {
         flex-direction: column;
 
         text-align: center;
     }
 
-    .avatar {
-        width: 85px;
-        height: 85px;
-
-        font-size: 34px;
-    }
-
-    .username {
-        font-size: 24px;
-    }
-
-    .profile-menu {
+    .menu {
         grid-template-columns: 1fr;
     }
 
-    .edit-button {
-        margin-top: 8px;
+    .edit {
+        margin-top: 5px;
     }
 
+    .video-grid {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<header class="topbar">
+<header>
 
     <button
-        class="back-button"
+        class="back"
         onclick="window.location.href='/'"
     >
         ←
@@ -314,22 +454,24 @@ body {
 </header>
 
 
-<main class="main">
+<div class="container">
 
     <div
         id="loading"
         class="loading"
     >
-        Loading profile...
+        Loading your profile...
     </div>
 
 
-    <section
-        id="profileSection"
+    <div
+        id="profileArea"
         style="display:none;"
     >
 
-        <div class="profile-header">
+        <!-- PROFILE -->
+
+        <section class="profile-card">
 
             <div
                 class="avatar"
@@ -344,7 +486,6 @@ body {
                     class="username"
                     id="username"
                 >
-                    User
                 </h1>
 
                 <div
@@ -362,114 +503,173 @@ body {
             </div>
 
             <button
-                class="edit-button"
-                onclick="editProfile()"
+                class="edit"
+                onclick="showEdit()"
             >
-                Edit Profile
+                ✏️ Edit Profile
             </button>
 
-        </div>
+        </section>
 
 
-        <div class="profile-menu">
+        <!-- EDIT PROFILE -->
+
+        <section
+            class="edit-panel"
+            id="editPanel"
+        >
+
+            <h2>Edit Profile</h2>
+
+            <label>Username</label>
+
+            <input
+                id="editUsername"
+                type="text"
+            >
+
+            <label>Full name</label>
+
+            <input
+                id="editFullName"
+                type="text"
+            >
+
+            <label>Bio</label>
+
+            <textarea
+                id="editBio"
+            ></textarea>
 
             <button
-                class="menu-item"
-                onclick="openSection('history')"
+                class="save-profile"
+                onclick="saveProfile()"
             >
-                <div class="menu-icon">🕘</div>
+                Save
+            </button>
 
-                <div class="menu-title">
+            <button
+                class="cancel"
+                onclick="hideEdit()"
+            >
+                Cancel
+            </button>
+
+        </section>
+
+
+        <!-- MENU -->
+
+        <section class="menu">
+
+            <button
+                class="menu-button"
+                onclick="loadHistory()"
+            >
+                <div class="icon">🕘</div>
+
+                <div class="title">
                     History
                 </div>
 
-                <div class="menu-description">
+                <div class="description">
                     Videos you've watched
                 </div>
             </button>
 
 
             <button
-                class="menu-item"
-                onclick="openSection('likes')"
+                class="menu-button"
+                onclick="loadLikes()"
             >
-                <div class="menu-icon">👍</div>
+                <div class="icon">👍</div>
 
-                <div class="menu-title">
+                <div class="title">
                     Liked Videos
                 </div>
 
-                <div class="menu-description">
+                <div class="description">
                     Videos you liked
                 </div>
             </button>
 
 
             <button
-                class="menu-item"
-                onclick="openSection('saved')"
+                class="menu-button"
+                onclick="loadSaved()"
             >
-                <div class="menu-icon">💾</div>
+                <div class="icon">💾</div>
 
-                <div class="menu-title">
+                <div class="title">
                     Saved Videos
                 </div>
 
-                <div class="menu-description">
-                    Videos you've saved
+                <div class="description">
+                    Videos you saved
                 </div>
             </button>
 
 
             <button
-                class="menu-item"
-                onclick="openSection('watchlater')"
+                class="menu-button"
+                onclick="loadWatchLater()"
             >
-                <div class="menu-icon">⏱️</div>
+                <div class="icon">⏱️</div>
 
-                <div class="menu-title">
+                <div class="title">
                     Watch Later
                 </div>
 
-                <div class="menu-description">
-                    Videos to watch later
+                <div class="description">
+                    Videos saved for later
                 </div>
             </button>
 
 
             <button
-                class="menu-item"
-                onclick="openSection('playlists')"
+                class="menu-button"
+                onclick="loadPlaylists()"
             >
-                <div class="menu-icon">📋</div>
+                <div class="icon">📋</div>
 
-                <div class="menu-title">
+                <div class="title">
                     Playlists
                 </div>
 
-                <div class="menu-description">
-                    Your saved playlists
+                <div class="description">
+                    Your playlists
                 </div>
             </button>
 
 
             <button
-                class="menu-item"
-                onclick="openSection('videos')"
+                class="menu-button"
+                onclick="loadMyVideos()"
             >
-                <div class="menu-icon">🎬</div>
+                <div class="icon">🎬</div>
 
-                <div class="menu-title">
+                <div class="title">
                     Your Videos
                 </div>
 
-                <div class="menu-description">
+                <div class="description">
                     Videos you've uploaded
                 </div>
             </button>
 
-        </div>
+        </section>
 
+
+        <!-- CONTENT -->
+
+        <section
+            class="content"
+            id="content"
+        >
+        </section>
+
+
+        <!-- LOGOUT -->
 
         <button
             class="logout"
@@ -478,80 +678,91 @@ body {
             🚪 Log Out
         </button>
 
-    </section>
+    </div>
 
-</main>
+</div>
 
 
 <script type="module">
 
 import {
     createClient
-} from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+}
+from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
 
 const SUPABASE_URL =
-    "https://xhqhnafxwblskgjrveqy.supabase.co";
+"https://xhqhnafxwblskgjrveqy.supabase.co";
 
 
-const SUPABASE_ANON_KEY =
-    "sb_publishable_vH0tiWjZW5z6l_5kANO_ig_Y3odvC3-";
+const SUPABASE_KEY =
+"sb_publishable_vH0tiWjZW5z6l_5kANO_ig_Y3odvC3-";
 
 
 const supabase =
-    createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
-    );
+createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 
+
+let currentUser = null;
+
+
+/* LOAD PROFILE */
 
 async function loadProfile() {
 
     const {
-        data: {
-            user
-        },
-        error: authError
+        data,
+        error
     } =
-        await supabase.auth.getUser();
+    await supabase.auth.getUser();
 
 
     if (
-        authError ||
-        !user
+        error ||
+        !data.user
     ) {
 
         window.location.href =
-            "/login.html";
+        "/login.html";
 
         return;
     }
 
 
+    currentUser =
+    data.user;
+
+
     const {
         data: profile,
-        error
+        error: profileError
     } =
-        await supabase
-            .from("profiles")
-            .select(
-                "username, full_name, avatar_url, bio"
-            )
-            .eq(
-                "id",
-                user.id
-            )
-            .single();
+    await supabase
+    .from("profiles")
+    .select(
+        "username, full_name, avatar_url, bio"
+    )
+    .eq(
+        "id",
+        currentUser.id
+    )
+    .single();
 
 
-    if (error) {
+    if (profileError) {
+
+        console.error(
+            profileError
+        );
 
         document.getElementById(
             "loading"
         ).textContent =
-            "Could not load profile.";
-
-        console.error(error);
+        "Could not load profile.";
 
         return;
     }
@@ -560,28 +771,30 @@ async function loadProfile() {
     document.getElementById(
         "username"
     ).textContent =
-        "@" + (
-            profile.username ||
-            "user"
-        );
+    "@" +
+    (
+        profile.username ||
+        "user"
+    );
 
 
     document.getElementById(
         "fullName"
     ).textContent =
-        profile.full_name || "";
+    profile.full_name || "";
 
 
     document.getElementById(
         "bio"
     ).textContent =
-        profile.bio || "No bio yet.";
+    profile.bio ||
+    "No bio yet.";
 
 
     const avatar =
-        document.getElementById(
-            "avatar"
-        );
+    document.getElementById(
+        "avatar"
+    );
 
 
     if (
@@ -589,72 +802,765 @@ async function loadProfile() {
     ) {
 
         avatar.innerHTML =
-            `<img
-                src="${profile.avatar_url}"
-                style="
-                    width:100%;
-                    height:100%;
-                    border-radius:50%;
-                    object-fit:cover;
-                "
-            >`;
+        `
+        <img
+            src="${profile.avatar_url}"
+        >
+        `;
 
     } else {
 
-        const name =
-            profile.username ||
-            "U";
-
         avatar.textContent =
-            name
-                .charAt(0)
-                .toUpperCase();
+        (
+            profile.username ||
+            "U"
+        )
+        .charAt(0)
+        .toUpperCase();
+
     }
+
+
+    document.getElementById(
+        "editUsername"
+    ).value =
+    profile.username || "";
+
+
+    document.getElementById(
+        "editFullName"
+    ).value =
+    profile.full_name || "";
+
+
+    document.getElementById(
+        "editBio"
+    ).value =
+    profile.bio || "";
 
 
     document.getElementById(
         "loading"
     ).style.display =
-        "none";
+    "none";
 
 
     document.getElementById(
-        "profileSection"
+        "profileArea"
     ).style.display =
-        "block";
+    "block";
 }
 
 
-window.openSection =
-    function(section) {
+/* EDIT PROFILE */
+
+window.showEdit =
+function() {
+
+    document.getElementById(
+        "editPanel"
+    ).style.display =
+    "block";
+
+};
+
+
+window.hideEdit =
+function() {
+
+    document.getElementById(
+        "editPanel"
+    ).style.display =
+    "none";
+
+};
+
+
+window.saveProfile =
+async function() {
+
+    const username =
+    document.getElementById(
+        "editUsername"
+    ).value.trim();
+
+
+    const fullName =
+    document.getElementById(
+        "editFullName"
+    ).value.trim();
+
+
+    const bio =
+    document.getElementById(
+        "editBio"
+    ).value.trim();
+
+
+    if (!username) {
 
         alert(
-            section +
-            " section is ready to connect."
+            "Username cannot be empty."
         );
 
-    };
+        return;
+    }
 
 
-window.editProfile =
+    const {
+        error
+    } =
+    await supabase
+    .from("profiles")
+    .update({
+        username:
+        username,
+
+        full_name:
+        fullName,
+
+        bio:
+        bio
+    })
+    .eq(
+        "id",
+        currentUser.id
+    );
+
+
+    if (error) {
+
+        alert(
+            "Could not update profile: " +
+            error.message
+        );
+
+        return;
+    }
+
+
+    alert(
+        "Profile updated successfully!"
+    );
+
+
+    location.reload();
+
+};
+
+
+/* VIDEO CARD */
+
+function createVideoCard(video) {
+
+    const card =
+    document.createElement(
+        "div"
+    );
+
+    card.className =
+    "video-card";
+
+
+    card.onclick =
     function() {
 
-        alert(
-            "Edit Profile will be connected next."
-        );
+        if (
+            video.video_url
+        ) {
+
+            window.open(
+                video.video_url,
+                "_blank"
+            );
+
+        }
 
     };
 
+
+    const thumbnail =
+    video.thumbnail_url ||
+    "https://via.placeholder.com/640x360?text=Video";
+
+
+    card.innerHTML =
+    `
+    <img
+        class="thumbnail"
+        src="${thumbnail}"
+        alt=""
+    >
+
+    <div class="video-info">
+
+        <div class="video-title">
+            ${escapeHtml(video.title || "Untitled video")}
+        </div>
+
+        <div class="video-meta">
+            ${Number(video.views || 0).toLocaleString()}
+            views
+        </div>
+
+    </div>
+    `;
+
+
+    return card;
+}
+
+
+/* RENDER VIDEOS */
+
+function renderVideos(
+    title,
+    videos
+) {
+
+    const content =
+    document.getElementById(
+        "content"
+    );
+
+
+    content.innerHTML =
+    `<h2>${title}</h2>`;
+
+
+    if (
+        !videos ||
+        videos.length === 0
+    ) {
+
+        content.innerHTML +=
+        `
+        <div class="empty">
+            No videos here yet.
+        </div>
+        `;
+
+        return;
+    }
+
+
+    const grid =
+    document.createElement(
+        "div"
+    );
+
+    grid.className =
+    "video-grid";
+
+
+    videos.forEach(
+        video => {
+
+            grid.appendChild(
+                createVideoCard(
+                    video
+                )
+            );
+
+        }
+    );
+
+
+    content.appendChild(
+        grid
+    );
+}
+
+
+/* HISTORY */
+
+window.loadHistory =
+async function() {
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+    .from("watch_history")
+    .select(
+        "video_id, watched_at"
+    )
+    .eq(
+        "user_id",
+        currentUser.id
+    )
+    .order(
+        "watched_at",
+        {
+            ascending: false
+        }
+    );
+
+
+    if (error) {
+
+        showError(error);
+
+        return;
+    }
+
+
+    const videos =
+    await getVideosFromIds(
+        data.map(
+            item => item.video_id
+        )
+    );
+
+
+    renderVideos(
+        "🕘 History",
+        videos
+    );
+};
+
+
+/* LIKES */
+
+window.loadLikes =
+async function() {
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+    .from("video_likes")
+    .select(
+        "video_id, created_at"
+    )
+    .eq(
+        "user_id",
+        currentUser.id
+    )
+    .order(
+        "created_at",
+        {
+            ascending: false
+        }
+    );
+
+
+    if (error) {
+
+        showError(error);
+
+        return;
+    }
+
+
+    const videos =
+    await getVideosFromIds(
+        data.map(
+            item => item.video_id
+        )
+    );
+
+
+    renderVideos(
+        "👍 Liked Videos",
+        videos
+    );
+};
+
+
+/* SAVED */
+
+window.loadSaved =
+async function() {
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+    .from("saved_videos")
+    .select(
+        "video_id, created_at"
+    )
+    .eq(
+        "user_id",
+        currentUser.id
+    )
+    .order(
+        "created_at",
+        {
+            ascending: false
+        }
+    );
+
+
+    if (error) {
+
+        showError(error);
+
+        return;
+    }
+
+
+    const videos =
+    await getVideosFromIds(
+        data.map(
+            item => item.video_id
+        )
+    );
+
+
+    renderVideos(
+        "💾 Saved Videos",
+        videos
+    );
+};
+
+
+/* WATCH LATER */
+
+window.loadWatchLater =
+async function() {
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+    .from("watch_later")
+    .select(
+        "video_id, created_at"
+    )
+    .eq(
+        "user_id",
+        currentUser.id
+    )
+    .order(
+        "created_at",
+        {
+            ascending: false
+        }
+    );
+
+
+    if (error) {
+
+        showError(error);
+
+        return;
+    }
+
+
+    const videos =
+    await getVideosFromIds(
+        data.map(
+            item => item.video_id
+        )
+    );
+
+
+    renderVideos(
+        "⏱️ Watch Later",
+        videos
+    );
+};
+
+
+/* MY VIDEOS */
+
+window.loadMyVideos =
+async function() {
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+    .from("videos")
+    .select(
+        "*"
+    )
+    .eq(
+        "user_id",
+        currentUser.id
+    )
+    .order(
+        "created_at",
+        {
+            ascending: false
+        }
+    );
+
+
+    if (error) {
+
+        showError(error);
+
+        return;
+    }
+
+
+    renderVideos(
+        "🎬 Your Videos",
+        data
+    );
+};
+
+
+/* PLAYLISTS */
+
+window.loadPlaylists =
+async function() {
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+    .from("playlists")
+    .select(
+        "id, name, description, created_at"
+    )
+    .eq(
+        "user_id",
+        currentUser.id
+    )
+    .order(
+        "created_at",
+        {
+            ascending: false
+        }
+    );
+
+
+    if (error) {
+
+        showError(error);
+
+        return;
+    }
+
+
+    const content =
+    document.getElementById(
+        "content"
+    );
+
+
+    content.innerHTML =
+    "<h2>📋 Playlists</h2>";
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        content.innerHTML +=
+        `
+        <div class="empty">
+            You haven't created any playlists yet.
+        </div>
+        `;
+
+        return;
+    }
+
+
+    data.forEach(
+        playlist => {
+
+            const div =
+            document.createElement(
+                "div"
+            );
+
+            div.className =
+            "playlist";
+
+
+            div.innerHTML =
+            `
+            <div class="playlist-name">
+                ${escapeHtml(
+                    playlist.name
+                )}
+            </div>
+
+            <div class="playlist-description">
+                ${escapeHtml(
+                    playlist.description ||
+                    "No description"
+                )}
+            </div>
+            `;
+
+
+            content.appendChild(
+                div
+            );
+
+        }
+    );
+};
+
+
+/* GET VIDEOS */
+
+async function getVideosFromIds(
+    ids
+) {
+
+    if (
+        !ids ||
+        ids.length === 0
+    ) {
+
+        return [];
+    }
+
+
+    const {
+        data,
+        error
+    } =
+    await supabase
+    .from("videos")
+    .select(
+        "*"
+    )
+    .in(
+        "id",
+        ids
+    );
+
+
+    if (error) {
+
+        showError(error);
+
+        return [];
+    }
+
+
+    /*
+       Keep the same order
+       as the history/likes/
+       saved list.
+    */
+
+    const map =
+    new Map(
+        data.map(
+            video =>
+            [
+                String(video.id),
+                video
+            ]
+        )
+    );
+
+
+    return ids
+    .map(
+        id =>
+        map.get(
+            String(id)
+        )
+    )
+    .filter(
+        Boolean
+    );
+}
+
+
+/* ERROR */
+
+function showError(
+    error
+) {
+
+    console.error(
+        error
+    );
+
+
+    document.getElementById(
+        "content"
+    ).innerHTML =
+    `
+    <div class="empty">
+        Could not load this section.
+        <br><br>
+        ${escapeHtml(
+            error.message ||
+            "Unknown error"
+        )}
+    </div>
+    `;
+}
+
+
+/* HTML SAFETY */
+
+function escapeHtml(
+    value
+) {
+
+    return String(value)
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+}
+
+
+/* LOGOUT */
 
 window.logout =
-    async function() {
+async function() {
 
-        await supabase.auth.signOut();
+    const {
+        error
+    } =
+    await supabase.auth.signOut();
 
-        window.location.href =
-            "/login.html";
-    };
 
+    if (error) {
+
+        alert(
+            "Logout failed: " +
+            error.message
+        );
+
+        return;
+    }
+
+
+    window.location.href =
+    "/login.html";
+};
+
+
+/* START */
 
 loadProfile();
 
