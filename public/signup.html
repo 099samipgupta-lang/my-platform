@@ -226,25 +226,18 @@ form.addEventListener("submit", async (event) => {
     }
 
     if (!data.user) {
-        message.textContent =
-            "Account could not be created.";
-        return;
     message.textContent =
+        "Account could not be created.";
+    return;
+}
+
+message.textContent =
     "Account created successfully! Please check your email to confirm your account.";
 
 setTimeout(() => {
-    window.location.href = "/login.html";
+    window.location.href =
+        "/login.html";
 }, 2000);
-
-    message.textContent =
-        "Account created successfully!";
-
-    setTimeout(() => {
-        window.location.href =
-            "/login.html";
-    }, 1500);
-
-});
 
 </script>
 
