@@ -222,7 +222,7 @@ header {
 
         <button
             class="upload-button"
-            onclick="window.location.href='/upload.html'"
+            onclick="uploadVideo()"
         >
             + Upload
         </button>
@@ -484,7 +484,51 @@ async function loadYourVideos() {
 
 loadYourVideos();
 
-</script>
+<script>
+async function uploadVideo() {
 
+    const input = document.createElement("input");
+
+    input.type = "file";
+    input.accept = "video/*,image/*";
+
+    input.onchange = async function () {
+
+        const file = input.files[0];
+
+        if (!file) return;
+
+        alert("Uploading...");
+
+        const formData = new FormData();
+        formData.append("video", file);
+
+        try {
+            const response = await fetch("/api/upload", {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message);
+            }
+
+            alert("Upload successful!");
+
+            console.log("Uploaded file:", result.url);
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert("Upload failed: " + error.message);
+        }
+    };
+
+    input.click();
+}
+</script>
 </body>
 </html>
