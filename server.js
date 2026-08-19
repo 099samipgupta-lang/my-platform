@@ -2,7 +2,14 @@ require("dotenv").config();
 
 const express = require("express");
 const path = require("path");
+const multer = require("multer");
 
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: 500 * 1024 * 1024
+    }
+});
 const app = express();
 
 app.use(express.json());
@@ -24,7 +31,56 @@ app.get("/api/health", (req, res) => {
         message: "My Platform backend is running"
     });
 });
+// Video upload endpoint
+app.post("/api/upload", upload.single("video"), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                status: "error",
+                message: "No video file selected"
+            });
+        }
 
+        const { createClient } = require("@supabase/supabase-js");
+
+        const supabase = createClient(
+            process.env.SUPABASE_URL,
+            process.env.SUPABASE_ANON_KEY
+        );
+
+        const fileName = `${Date.now()}-${req.file.originalname}`;
+
+        const { error } = await supabase.storage
+            .from("Videos")
+            .upload(fileName, req.file.buffer, {
+                contentType: req.file.mimetype,
+                upsert: false
+            });
+
+        if (error) {
+            return res.status(500).json({
+                status: "error",
+                message: error.message
+            });
+        }
+
+        const { data } = supabase.storage
+            .from("Videos")
+            .getPublicUrl(fileName);
+
+        res.json({
+            status: "ok",
+            message: "Video uploaded successfully",
+            url: data.publicUrl
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: "error",
+            message: error.message
+        });
+    }
+});
 // Supabase connection test
 app.get("/api/supabase-test", async (req, res) => {
 

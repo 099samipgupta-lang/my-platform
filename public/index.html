@@ -1611,11 +1611,64 @@
 
         function uploadVideo() {
 
+    const input = document.createElement("input");
+
+    input.type = "file";
+    input.accept = "video/*";
+
+    input.onchange = async function () {
+
+        const file = input.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        showMessage("Uploading video...");
+
+        const formData = new FormData();
+        formData.append("video", file);
+
+        try {
+
+            const response = await fetch(
+                "/api/upload",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message);
+            }
+
             showMessage(
-                "Upload system will be connected to your backend next."
+                "Video uploaded successfully!"
+            );
+
+            console.log(
+                "Video URL:",
+                result.url
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage(
+                "Upload failed: " + error.message
             );
 
         }
+
+    };
+
+    input.click();
+
+}
 
 
         const uploadButton =
