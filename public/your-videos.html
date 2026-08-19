@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
 <title>Your Videos - MyPlatform</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -148,7 +150,6 @@ header {
 
 .video-title {
     font-size: 16px;
-
     font-weight: bold;
 
     line-height: 1.35;
@@ -187,9 +188,12 @@ header {
     .page-title {
         font-size: 23px;
     }
+
 }
+
 </style>
 </head>
+
 
 <body>
 
@@ -222,7 +226,7 @@ header {
 
         <button
             class="upload-button"
-            onclick="uploadVideo()"
+            id="uploadButton"
         >
             + Upload
         </button>
@@ -254,41 +258,45 @@ import {
     createClient
 }
 from
-"https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 
 const SUPABASE_URL =
-"https://xhqhnafxwblskgjrveqy.supabase.co";
+    "https://xhqhnafxwblskgjrveqy.supabase.co";
 
 
 const SUPABASE_KEY =
-"sb_publishable_vH0tiWjZW5z6l_5kANO_ig_Y3odvC3-";
+    "sb_publishable_vH0tiWjZW5z6l_5kANO_ig_Y3odvC3-";
 
 
 const supabase =
-createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+    createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
 
 const status =
-document.getElementById(
-    "status"
-);
+    document.getElementById(
+        "status"
+    );
 
 
 const videoGrid =
-document.getElementById(
-    "videoGrid"
-);
+    document.getElementById(
+        "videoGrid"
+    );
+
+
+const uploadButton =
+    document.getElementById(
+        "uploadButton"
+    );
 
 
 /* HTML SAFETY */
 
-function escapeHtml(
-    value
-) {
+function escapeHtml(value) {
 
     return String(value)
         .replace(
@@ -311,6 +319,7 @@ function escapeHtml(
             /'/g,
             "&#039;"
         );
+
 }
 
 
@@ -331,14 +340,14 @@ async function loadYourVideos() {
     ) {
 
         window.location.href =
-        "/login.html";
+            "/login.html";
 
         return;
     }
 
 
     const userId =
-    userData.user.id;
+        userData.user.id;
 
 
     const {
@@ -348,7 +357,7 @@ async function loadYourVideos() {
     await supabase
         .from("videos")
         .select(
-            "id, title, description, category, video_url, thumbnail_url, views, created_at"
+            "id, title, description, category, video_url, thumbnail_url, views, created_at, content_type"
         )
         .eq(
             "user_id",
@@ -375,10 +384,6 @@ async function loadYourVideos() {
         return;
     }
 
-
-    /*
-       No uploads yet.
-    */
 
     if (
         !videos ||
@@ -429,7 +434,7 @@ async function loadYourVideos() {
                     <div class="video-title">
                         ${escapeHtml(
                             video.title ||
-                            "Untitled video"
+                            "Untitled"
                         )}
                     </div>
 
@@ -450,11 +455,6 @@ async function loadYourVideos() {
                 </div>
                 `;
 
-
-            /*
-               For now open the
-               video's URL directly.
-            */
 
             card.addEventListener(
                 "click",
@@ -479,56 +479,213 @@ async function loadYourVideos() {
 
         }
     );
+
 }
 
+
+/* UPLOAD */
+
+async function uploadVideo() {
+
+    const title =
+        prompt(
+            "Enter video/image title:"
+        );
+
+
+    if (
+        !title ||
+        !title.trim()
+    ) {
+
+        alert(
+            "Title is required."
+        );
+
+        return;
+    }
+
+
+    const description =
+        prompt(
+            "Enter description:"
+        ) || "";
+
+
+    const category =
+        prompt(
+            "Enter category:"
+        ) || "Other";
+
+
+    const input =
+        document.createElement(
+            "input"
+        );
+
+
+    input.type =
+        "file";
+
+
+    input.accept =
+        "video/*,image/*";
+
+
+    input.onchange =
+        async function () {
+
+            const file =
+                input.files[0];
+
+
+            if (!file) {
+                return;
+            }
+
+
+            try {
+
+                const {
+                    data: sessionData,
+                    error: sessionError
+                } =
+                await supabase.auth.getSession();
+
+
+                if (
+                    sessionError ||
+                    !sessionData.session
+                ) {
+
+                    alert(
+                        "Please log in before uploading."
+                    );
+
+                    return;
+                }
+
+
+                const accessToken =
+                    sessionData.session
+                        .access_token;
+
+
+                alert(
+                    "Uploading..."
+                );
+
+
+                const formData =
+                    new FormData();
+
+
+                formData.append(
+                    "video",
+                    file
+                );
+
+
+                formData.append(
+                    "title",
+                    title.trim()
+                );
+
+
+                formData.append(
+                    "description",
+                    description.trim()
+                );
+
+
+                formData.append(
+                    "category",
+                    category.trim()
+                );
+
+
+                const response =
+                    await fetch(
+                        "/api/upload",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                Authorization:
+                                    `Bearer ${accessToken}`
+                            },
+
+                            body: formData
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (
+                    !response.ok
+                ) {
+
+                    throw new Error(
+                        result.message ||
+                        "Upload failed"
+                    );
+
+                }
+
+
+                alert(
+                    "Upload successful!"
+                );
+
+
+                console.log(
+                    "Uploaded content:",
+                    result.video
+                );
+
+
+                window.location.reload();
+
+
+            } catch (error) {
+
+                console.error(
+                    error
+                );
+
+                alert(
+                    "Upload failed: " +
+                    error.message
+                );
+
+            }
+
+        };
+
+
+    input.click();
+
+}
+
+
+/* CONNECT UPLOAD BUTTON */
+
+uploadButton.addEventListener(
+    "click",
+    uploadVideo
+);
+
+
+/* START */
 
 loadYourVideos();
 
-<script>
-async function uploadVideo() {
-
-    const input = document.createElement("input");
-
-    input.type = "file";
-    input.accept = "video/*,image/*";
-
-    input.onchange = async function () {
-
-        const file = input.files[0];
-
-        if (!file) return;
-
-        alert("Uploading...");
-
-        const formData = new FormData();
-        formData.append("video", file);
-
-        try {
-            const response = await fetch("/api/upload", {
-                method: "POST",
-                body: formData
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.message);
-            }
-
-            alert("Upload successful!");
-
-            console.log("Uploaded file:", result.url);
-
-        } catch (error) {
-
-            console.error(error);
-
-            alert("Upload failed: " + error.message);
-        }
-    };
-
-    input.click();
-}
 </script>
+
 </body>
 </html>
+
+            
