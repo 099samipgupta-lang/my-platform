@@ -1614,9 +1614,10 @@
     const input = document.createElement("input");
 
     input.type = "file";
-    input.accept = "video/*,image/*";
 
-    input.onchange = async function () {
+    input.accept = "image/*,video/*";
+
+    input.onchange = function () {
 
         const file = input.files[0];
 
@@ -1624,50 +1625,19 @@
             return;
         }
 
-        showMessage("Uploading video...");
+        console.log(
+            "Selected file:",
+            file.name
+        );
 
-        const formData = new FormData();
-        formData.append("video", file);
-
-        try {
-
-            const response = await fetch(
-                "/api/upload",
-                {
-                    method: "POST",
-                    body: formData
-                }
-            );
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.message);
-            }
-
-            showMessage(
-                "Video uploaded successfully!"
-            );
-
-            console.log(
-                "Video URL:",
-                result.url
-            );
-
-        } catch (error) {
-
-            console.error(error);
-
-            showMessage(
-                "Upload failed: " + error.message
-            );
-
-        }
+        console.log(
+            "File type:",
+            file.type
+        );
 
     };
 
     input.click();
-
 }
 
 
