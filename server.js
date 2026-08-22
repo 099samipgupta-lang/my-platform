@@ -7,24 +7,57 @@ const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
 
+
+// =========================
+// SUPABASE
+// =========================
+
+if (!process.env.SUPABASE_URL) {
+    throw new Error("SUPABASE_URL is missing from .env");
+}
+
+if (!process.env.SUPABASE_ANON_KEY) {
+    throw new Error("SUPABASE_ANON_KEY is missing from .env");
+}
+
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+);
+
+
+// =========================
+// MULTER
+// =========================
+
 const upload = multer({
     storage: multer.memoryStorage(),
+
     limits: {
         fileSize: 500 * 1024 * 1024
     }
 });
 
+
+// =========================
+// EXPRESS
+// =========================
+
 app.use(express.json());
 
-// Serve all files inside the public folder
 app.use(
     express.static(
         path.join(__dirname, "public")
     )
 );
 
-// Homepage
+
+// =========================
+// HOMEPAGE
+// =========================
+
 app.get("/", (req, res) => {
+
     res.sendFile(
         path.join(
             __dirname,
@@ -32,34 +65,49 @@ app.get("/", (req, res) => {
             "index.html"
         )
     );
+
 });
 
-// Backend health check
+
+// =========================
+// HEALTH CHECK
+// =========================
+
 app.get("/api/health", (req, res) => {
+
     res.json({
         status: "ok",
         message: "My Platform backend is running"
     });
+
 });
 
-// Video / image upload endpoint
+
+// =========================
+// UPLOAD
+// =========================
+
 app.post(
     "/api/upload",
     upload.single("video"),
+
     async (req, res) => {
 
         try {
 
-            // Make sure a file was selected
+            // Check file
             if (!req.file) {
+
                 return res.status(400).json({
                     status: "error",
                     message:
                         "No video or image selected"
                 });
+
             }
 
-            // Get user's Supabase access token
+
+            // Check authorization
             const authHeader =
                 req.headers.authorization;
 
@@ -67,83 +115,96 @@ app.post(
                 !authHeader ||
                 !authHeader.startsWith("Bearer ")
             ) {
+
                 return res.status(401).json({
                     status: "error",
                     message:
                         "You must be logged in"
                 });
+
             }
+
 
             const accessToken =
                 authHeader.substring(7);
 
-            // Create Supabase client
-            // using the logged-in user's token
-            const supabase = createClient(
-                process.env.SUPABASE_URL,
-                process.env.SUPABASE_ANON_KEY,
-                {
-                    global: {
-                        headers: {
-                            Authorization:
-                                `Bearer ${accessToken}`
+
+            // Create client using
+            // logged-in user's token
+            const userSupabase =
+                createClient(
+                    process.env.SUPABASE_URL,
+                    process.env.SUPABASE_ANON_KEY,
+                    {
+                        global: {
+                            headers: {
+                                Authorization:
+                                    `Bearer ${accessToken}`
+                            }
                         }
                     }
-                }
-            );
+                );
 
-            // Verify the logged-in user
+
+            // Verify user
             const {
                 data: userData,
                 error: userError
             } =
-                await supabase.auth.getUser(
+                await userSupabase.auth.getUser(
                     accessToken
                 );
+
 
             if (
                 userError ||
                 !userData.user
             ) {
+
                 return res.status(401).json({
                     status: "error",
                     message:
                         "Invalid or expired login session"
                 });
+
             }
+
 
             const userId =
                 userData.user.id;
 
-            // Get information sent by frontend
+
+            // Get upload information
             const title =
                 req.body.title ||
                 req.file.originalname;
 
             const description =
-                req.body.description || "";
+                req.body.description ||
+                "";
 
             const category =
                 req.body.category ||
                 "Other";
 
-            // Detect video or image
+
+            // Detect image/video
             const contentType =
-                req.file.mimetype.startsWith(
-                    "image/"
-                )
+                req.file.mimetype.startsWith("image/")
                     ? "image"
                     : "video";
 
-            // Create unique storage path
+
+            // Unique file name
             const fileName =
                 `${userId}/${Date.now()}-${req.file.originalname}`;
 
-            // Upload file to Supabase Storage
+
+            // Upload to Storage
             const {
                 error: uploadError
             } =
-                await supabase.storage
+                await userSupabase.storage
                     .from("Videos")
                     .upload(
                         fileName,
@@ -151,98 +212,145 @@ app.post(
                         {
                             contentType:
                                 req.file.mimetype,
+
                             upsert: false
                         }
                     );
 
+
             if (uploadError) {
+
+                console.error(
+                    "Storage error:",
+                    uploadError
+                );
+
                 return res.status(500).json({
                     status: "error",
                     message:
                         uploadError.message
                 });
+
             }
+
 
             // Get public URL
             const {
                 data: publicUrlData
             } =
-                supabase.storage
+                userSupabase.storage
                     .from("Videos")
                     .getPublicUrl(
                         fileName
                     );
 
+
             const fileUrl =
                 publicUrlData.publicUrl;
 
-            // Save upload information
-            // into the videos table
+
+            // Save information
+            // into videos table
             const {
                 data: video,
                 error: databaseError
             } =
-                await supabase
+                await userSupabase
                     .from("videos")
                     .insert({
-                        user_id: userId,
-                        title: title,
+
+                        user_id:
+                            userId,
+
+                        title:
+                            title,
+
                         description:
                             description,
-                        category: category,
-                        video_url: fileUrl,
+
+                        category:
+                            category,
+
+                        video_url:
+                            fileUrl,
+
                         thumbnail_url:
                             contentType === "image"
                                 ? fileUrl
                                 : null,
-                        views: 0,
+
+                        views:
+                            0,
+
                         content_type:
                             contentType
+
                     })
                     .select()
                     .single();
 
+
             if (databaseError) {
+
+                console.error(
+                    "Database error:",
+                    databaseError
+                );
+
                 return res.status(500).json({
                     status: "error",
                     message:
                         databaseError.message
                 });
+
             }
 
-            // Everything succeeded
+
+            // SUCCESS
             res.json({
+
                 status: "ok",
+
                 message:
                     "Upload successful",
-                video: video
+
+                video:
+                    video
+
             });
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "Upload error:",
+                error
+            );
 
             res.status(500).json({
+
                 status: "error",
+
                 message:
                     error.message
+
             });
+
         }
+
     }
 );
 
-// Supabase connection test
+
+// =========================
+// SUPABASE TEST
+// =========================
+
 app.get(
     "/api/supabase-test",
+
     async (req, res) => {
 
         try {
-
-            const supabase =
-                createClient(
-                    process.env.SUPABASE_URL,
-                    process.env.SUPABASE_ANON_KEY
-                );
 
             const {
                 error
@@ -252,41 +360,64 @@ app.get(
                     .select("id")
                     .limit(1);
 
+
             if (error) {
+
                 return res.status(500).json({
+
                     status: "error",
+
                     message:
                         error.message
+
                 });
+
             }
 
+
             res.json({
+
                 status: "ok",
+
                 message:
                     "Supabase database connection is working"
+
             });
 
         } catch (error) {
 
             res.status(500).json({
+
                 status: "error",
+
                 message:
                     error.message
+
             });
+
         }
+
     }
 );
 
-// Start server
+
+// =========================
+// START SERVER
+// =========================
+
 const PORT =
     process.env.PORT || 3000;
+
 
 app.listen(
     PORT,
     "0.0.0.0",
+
     () => {
+
         console.log(
             `My Platform is running on port ${PORT}`
         );
+
     }
 );
