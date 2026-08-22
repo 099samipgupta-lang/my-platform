@@ -279,212 +279,132 @@ function escapeHtml(value) {
 
 /* LOAD USER'S VIDEOS */
 
-async function loadYourVideos() {
+async function uploadVideo() {
 
-    const {
-        data: userData,
-        error: userError
-    } =
-    await supabase.auth.getUser();
+    const input = document.createElement("input");
 
+    input.type = "file";
+    input.accept = "image/*,video/*";
 
-    if (
-        userError ||
-        !userData.user
-    ) {
+    input.onchange = async function () {
 
-        window.location.href =
-            "/login.html";
+        const file = input.files[0];
 
-        return;
-    }
-
-
-    const userId =
-        userData.user.id;
-
-
-    const {
-        data: videos,
-        error: videosError
-    } =
-    await supabase
-        .from("videos")
-        .select(
-            "id, title, description, category, video_url, thumbnail_url, views, created_at, content_type"
-        )
-        .eq(
-            "user_id",
-            userId
-        )
-        .order(
-            "created_at",
-            {
-                ascending: false
-            }
-        );
-
-
-    if (videosError) {
-
-        console.error(
-            videosError
-        );
-
-        status.textContent =
-            "Could not load your videos: " +
-            videosError.message;
-
-        return;
-    }
-
-
-    if (
-        !videos ||
-        videos.length === 0
-    ) {
-
-        status.textContent =
-            "You haven't uploaded any videos yet.";
-
-        return;
-    }
-
-
-    status.style.display =
-        "none";
-
-    videoGrid.style.display =
-        "grid";
-
-
-    videos.forEach(
-        video => {
-
-            const card =
-                document.createElement(
-                    "article"
-                );
-
-            card.className =
-                "video-card";
-
-
-            const thumbnail =
-                video.thumbnail_url ||
-                "https://via.placeholder.com/640x360?text=Video";
-
-
-            card.innerHTML =
-                `
-                <img
-                    class="thumbnail"
-                    src="${escapeHtml(thumbnail)}"
-                    alt=""
-                >
-
-                <div class="video-info">
-
-                    <div class="video-title">
-                        ${escapeHtml(
-                            video.title ||
-                            "Untitled"
-                        )}
-                    </div>
-
-                    <div class="video-description">
-                        ${escapeHtml(
-                            video.description ||
-                            ""
-                        )}
-                    </div>
-
-                    <div class="video-meta">
-                        ${Number(
-                            video.views || 0
-                        ).toLocaleString()}
-                        views
-                    </div>
-
-                </div>
-                `;
-
-
-            card.addEventListener(
-                "click",
-                () => {
-
-                    if (
-                        video.video_url
-                    ) {
-
-                        window.location.href =
-                            video.video_url;
-
-                    }
-
-                }
-            );
-
-
-            videoGrid.appendChild(
-                card
-            );
-
+        if (!file) {
+            return;
         }
-    );
 
-}
+        console.log("Selected file:", file.name);
+        console.log("File type:", file.type);
 
+        try {
 
-/* STEP 1: OPEN PHONE FILE PICKER */
+            // Get logged-in user's session
+            const {
+                data: sessionData,
+                error: sessionError
+            } = await supabase.auth.getSession();
 
-function uploadVideo() {
-
-    const input =
-        document.createElement(
-            "input"
-        );
-
-
-    input.type =
-        "file";
-
-
-    input.accept =
-        "image/*,video/*";
-
-
-    input.onchange =
-        function () {
-
-            const file =
-                input.files[0];
-
-
-            if (!file) {
+            if (
+                sessionError ||
+                !sessionData.session
+            ) {
+                alert("Please log in before uploading.");
                 return;
             }
 
+            const accessToken =
+                sessionData.session.access_token;
 
-            console.log(
-                "Selected file:",
-                file.name
+            const title =
+                prompt("Enter title:") ||
+                file.name;
+
+            const description =
+                prompt("Enter description:") ||
+                "";
+
+            const category =
+                prompt("Enter category:") ||
+                "Other";
+
+            const formData =
+                new FormData();
+
+            formData.append(
+                "video",
+                file
             );
 
-
-            console.log(
-                "File type:",
-                file.type
+            formData.append(
+                "title",
+                title.trim()
             );
 
-        };
+            formData.append(
+                "description",
+                description.trim()
+            );
 
+            formData.append(
+                "category",
+                category.trim()
+            );
+
+            alert("Uploading...");
+
+            const response =
+                await fetch(
+                    "/api/upload",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            Authorization:
+                                `Bearer ${accessToken}`
+                        },
+
+                        body: formData
+                    }
+                );
+
+            const result =
+                await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    result.message ||
+                    "Upload failed"
+                );
+            }
+
+            console.log(
+                "Uploaded content:",
+                result.video
+            );
+
+            alert("Upload successful!");
+
+            window.location.reload();
+
+        } catch (error) {
+
+            console.error(
+                "UPLOAD ERROR:",
+                error
+            );
+
+            alert(
+                "Upload failed: " +
+                error.message
+            );
+        }
+    };
 
     input.click();
-
 }
-
+    
+                
 
 /* CONNECT UPLOAD BUTTON */
 
