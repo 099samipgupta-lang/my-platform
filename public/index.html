@@ -1609,37 +1609,132 @@
            UPLOAD
         ========================= */
 
-        function uploadVideo() {
+        async function uploadVideo() {
 
-    const input = document.createElement("input");
+    const input =
+        document.createElement("input");
 
-    input.type = "file";
+    input.type =
+        "file";
 
-    input.accept = "image/*,video/*";
+    input.accept =
+        "image/*,video/*";
 
-    input.onchange = function () {
 
-        const file = input.files[0];
+    input.onchange =
+        async function () {
 
-        if (!file) {
-            return;
-        }
+            const file =
+                input.files[0];
 
-        console.log(
-            "Selected file:",
-            file.name
-        );
+            if (!file) {
+                return;
+            }
 
-        console.log(
-            "File type:",
-            file.type
-        );
 
-    };
+            try {
+
+                // Get logged-in user's session
+                const {
+                    data: sessionData,
+                    error: sessionError
+                } =
+                await supabase.auth.getSession();
+
+
+                if (
+                    sessionError ||
+                    !sessionData.session
+                ) {
+
+                    showMessage(
+                        "Please log in before uploading."
+                    );
+
+                    return;
+                }
+
+
+                const accessToken =
+                    sessionData.session
+                        .access_token;
+
+
+                showMessage(
+                    "Uploading..."
+                );
+
+
+                const formData =
+                    new FormData();
+
+
+                formData.append(
+                    "video",
+                    file
+                );
+
+
+                const response =
+                    await fetch(
+                        "/api/upload",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                Authorization:
+                                    `Bearer ${accessToken}`
+                            },
+
+                            body: formData
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        result.message ||
+                        "Upload failed"
+                    );
+
+                }
+
+
+                showMessage(
+                    "Upload successful!"
+                );
+
+
+                console.log(
+                    "Uploaded content:",
+                    result.video
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    error
+                );
+
+                showMessage(
+                    "Upload failed: " +
+                    error.message
+                );
+
+            }
+
+        };
+
 
     input.click();
-}
 
+}
 
         const uploadButton =
             document.getElementById("uploadButton");
