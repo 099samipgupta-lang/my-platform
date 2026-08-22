@@ -127,7 +127,8 @@ app.post(
 
             const accessToken =
                 authHeader.substring(7);
-
+console.log("UPLOAD REQUEST RECEIVED");
+console.log("TOKEN RECEIVED:", !!accessToken);
 
             // Create client using
             // logged-in user's token
@@ -172,7 +173,7 @@ app.post(
 
             const userId =
                 userData.user.id;
-
+                console.log("UPLOAD USER ID:", userId);
 
             // Get upload information
             const title =
@@ -293,10 +294,10 @@ app.post(
             if (databaseError) {
 
                 console.error(
-                    "Database error:",
+                    "Database insert  error:",
                     databaseError
                 );
-
+                console.error("USER ID USED FOR INSERT:", userId);
                 return res.status(500).json({
                     status: "error",
                     message:
