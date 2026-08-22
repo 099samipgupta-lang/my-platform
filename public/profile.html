@@ -66,24 +66,26 @@ header {
 /* PROFILE */
 
 .profile-card {
-    background: #181818;
-
-    border: 1px solid #292929;
-
-    border-radius: 15px;
-
-    padding: 28px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 25px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 20px 0 0;
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    grid-template-areas:
+        "avatar info menu"
+        "avatar stats menu"
+        "avatar bio menu"
+        "avatar actions menu";
+    column-gap: 24px;
+    align-items: start;
 }
 
 .avatar {
-    width: 100px;
-    height: 100px;
+    grid-area: avatar;
+
+    width: 110px;
+    height: 110px;
 
     border-radius: 50%;
 
@@ -94,7 +96,6 @@ header {
     );
 
     display: flex;
-
     justify-content: center;
     align-items: center;
 
@@ -102,52 +103,147 @@ header {
     font-weight: bold;
 
     overflow: hidden;
-
     flex-shrink: 0;
 }
 
 .avatar img {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
 }
 
 .profile-info {
-    flex: 1;
+    grid-area: info;
+    min-width: 0;
 }
 
 .username {
     margin: 0;
-
-    font-size: 28px;
+    font-size: 26px;
+    font-weight: 700;
 }
 
 .full-name {
     color: #aaa;
-
-    margin-top: 8px;
+    margin-top: 5px;
+    font-size: 15px;
 }
 
 .bio {
-    color: #ccc;
-
+    grid-area: bio;
+    color: #ddd;
     margin-top: 12px;
+    line-height: 1.5;
+}
+
+.profile-stats {
+    grid-area: stats;
+
+    display: flex;
+    gap: 30px;
+    margin-top: 14px;
+}
+
+.profile-stat {
+    text-align: center;
+}
+
+.profile-stat-number {
+    display: block;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.profile-stat-label {
+    display: block;
+    color: #999;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+.profile-actions {
+    grid-area: actions;
+
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.edit,
+.share-profile {
+    border: 1px solid #3a3a3a;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
 }
 
 .edit {
     background: white;
     color: black;
+}
+
+.share-profile {
+    background: #181818;
+    color: white;
+}
+
+.profile-menu {
+    grid-area: menu;
 
     border: none;
+    background: transparent;
+    color: white;
 
-    padding: 10px 18px;
-
-    border-radius: 8px;
-
-    font-weight: bold;
-
+    font-size: 25px;
     cursor: pointer;
+
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.profile-menu:hover {
+    background: #242424;
+}
+
+/* PROFILE TABS */
+
+.profile-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    margin-top: 35px;
+
+    border-top: 1px solid #292929;
+    border-bottom: 1px solid #292929;
+}
+
+.profile-tab {
+    border: none;
+    background: transparent;
+    color: #888;
+
+    padding: 16px 10px;
+
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.profile-tab span {
+    display: block;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+.profile-tab:hover,
+.profile-tab.active {
+    color: white;
+}
+
+.profile-tab.active {
+    border-bottom: 2px solid white;
 }
 
 /* MENU */
@@ -473,44 +569,202 @@ header {
 
         <section class="profile-card">
 
-            <div
-                class="avatar"
-                id="avatar"
+    <!-- PROFILE PHOTO -->
+    <div
+        class="avatar"
+        id="avatar"
+    >
+        ?
+    </div>
+
+
+    <!-- PROFILE INFORMATION -->
+    <div class="profile-info">
+
+        <h1
+            class="username"
+            id="username"
+        ></h1>
+
+        <div
+            class="full-name"
+            id="fullName"
+        ></div>
+
+    </div>
+
+
+    <!-- THREE-DOT MENU -->
+    <button
+        class="profile-menu"
+        type="button"
+        onclick="showMessage('Profile menu')"
+        aria-label="Profile menu"
+    >
+        ⋮
+    </button>
+
+
+    <!-- PROFILE STATS -->
+    <div class="profile-stats">
+
+        <div class="profile-stat">
+            <span
+                class="profile-stat-number"
+                id="postCount"
             >
-                ?
-            </div>
+                0
+            </span>
 
-            <div class="profile-info">
+            <span class="profile-stat-label">
+                Posts
+            </span>
+        </div>
 
-                <h1
-                    class="username"
-                    id="username"
-                >
-                </h1>
 
-                <div
-                    class="full-name"
-                    id="fullName"
-                >
-                </div>
-
-                <div
-                    class="bio"
-                    id="bio"
-                >
-                </div>
-
-            </div>
-
-            <button
-                class="edit"
-                onclick="showEdit()"
+        <div class="profile-stat">
+            <span
+                class="profile-stat-number"
+                id="subscriberCount"
             >
-                ✏️ Edit Profile
-            </button>
+                0
+            </span>
 
-        </section>
+            <span class="profile-stat-label">
+                Subscribers
+            </span>
+        </div>
 
+
+        <div class="profile-stat">
+            <span
+                class="profile-stat-number"
+                id="subscriptionCount"
+            >
+                0
+            </span>
+
+            <span class="profile-stat-label">
+                Subscriptions
+            </span>
+        </div>
+
+    </div>
+
+
+    <!-- BIO -->
+    <div
+        class="bio"
+        id="bio"
+    ></div>
+
+
+    <!-- PROFILE ACTIONS -->
+    <div class="profile-actions">
+
+        <button
+            class="edit"
+            type="button"
+            onclick="showEdit()"
+        >
+            Edit profile
+        </button>
+
+        <button
+            class="share-profile"
+            type="button"
+            onclick="shareProfile()"
+        >
+            Share profile
+        </button>
+
+    </div>
+
+</section>
+<!-- PROFILE CONTENT TABS -->
+
+<section class="profile-content">
+
+    <div class="profile-tabs">
+
+        <button
+            class="profile-tab active"
+            type="button"
+            onclick="showProfileTab('posts', this)"
+        >
+            ▦
+            <span>Posts</span>
+        </button>
+
+        <button
+            class="profile-tab"
+            type="button"
+            onclick="showProfileTab('videos', this)"
+        >
+            ▶
+            <span>Videos</span>
+        </button>
+
+        <button
+            class="profile-tab"
+            type="button"
+            onclick="showProfileTab('reposts', this)"
+        >
+            🔁
+            <span>Reposts</span>
+        </button>
+
+        <button
+            class="profile-tab"
+            type="button"
+            onclick="showProfileTab('tagged', this)"
+        >
+            🏷
+            <span>Tagged</span>
+        </button>
+
+    </div>
+
+
+    <div
+        id="profilePosts"
+        class="profile-tab-content"
+    >
+        <div class="video-grid" id="profilePostGrid">
+        </div>
+    </div>
+
+
+    <div
+        id="profileVideos"
+        class="profile-tab-content"
+        style="display:none;"
+    >
+        <div class="video-grid" id="profileVideoGrid">
+        </div>
+    </div>
+
+
+    <div
+        id="profileReposts"
+        class="profile-tab-content"
+        style="display:none;"
+    >
+        <div class="video-grid" id="profileRepostGrid">
+        </div>
+    </div>
+
+
+    <div
+        id="profileTagged"
+        class="profile-tab-content"
+        style="display:none;"
+    >
+        <div class="video-grid" id="profileTaggedGrid">
+        </div>
+    </div>
+
+</section>
 
         <!-- EDIT PROFILE -->
 
@@ -1563,7 +1817,80 @@ async function() {
 /* START */
 
 loadProfile();
+function showMessage(message) {
+    alert(message);
+}
 
+async function shareProfile() {
+
+    const username =
+        document.getElementById("username").textContent;
+
+    const profileUrl =
+        window.location.href;
+
+    try {
+
+        if (navigator.share) {
+
+            await navigator.share({
+                title: username + "'s Profile",
+                url: profileUrl
+            });
+
+        } else {
+
+            await navigator.clipboard.writeText(
+                profileUrl
+            );
+
+            alert("Profile link copied!");
+
+        }
+
+    } catch (error) {
+
+        console.log(
+            "Share cancelled or unavailable."
+        );
+
+    }
+}
+function showProfileTab(tabName, button) {
+
+    document
+        .querySelectorAll(".profile-tab")
+        .forEach(tab => {
+            tab.classList.remove("active");
+        });
+
+    button.classList.add("active");
+
+
+    const sections = {
+        posts: "profilePosts",
+        videos: "profileVideos",
+        reposts: "profileReposts",
+        tagged: "profileTagged"
+    };
+
+
+    Object.values(sections).forEach(id => {
+
+        document.getElementById(id).style.display =
+            "none";
+
+    });
+
+
+    if (sections[tabName]) {
+
+        document.getElementById(
+            sections[tabName]
+        ).style.display = "block";
+
+    }
+}
 </script>
 
 </body>
