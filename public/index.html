@@ -1333,11 +1333,10 @@
 import { createClient } from
 "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-window.supabaseClient = createClient(
+const supabase = createClient(
     "https://xhqhnafxwblskgjrveqy.supabase.co",
     "sb_publishable_vH0tiWjZW5z6l_5kANO_ig_Y3odvC3-"
 );
-</script>
 
         const searchInput =
             document.getElementById("searchInput");
