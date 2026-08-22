@@ -1329,14 +1329,8 @@
          JAVASCRIPT
     ========================= -->
 
-    <script type="module">
-import { createClient } from
-"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
-const supabase = createClient(
-    "https://xhqhnafxwblskgjrveqy.supabase.co",
-    "sb_publishable_vH0tiWjZW5z6l_5kANO_ig_Y3odvC3-"
-);
+    <script>
+    
 
         const searchInput =
             document.getElementById("searchInput");
@@ -1641,12 +1635,21 @@ const supabase = createClient(
 
             try {
 
-                // Get logged-in user's session
-                const {
-                    data: sessionData,
-                    error: sessionError
-                } =
-                await supabase.auth.getSession();
+                // Connect to Supabase
+const { createClient } = await import(
+    "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
+);
+
+const supabase = createClient(
+    "https://xhqhnafxwblskgjrveqy.supabase.co",
+    "sb_publishable_vH0tiWjZW5z6l_5kANO_ig_Y3odvC3-"
+);
+
+// Get logged-in user's session
+const {
+    data: sessionData,
+    error: sessionError
+} = await supabase.auth.getSession();
 
 
                 if (
