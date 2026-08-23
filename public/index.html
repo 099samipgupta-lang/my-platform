@@ -655,6 +655,68 @@
                 color: white;
             }
         }
+/* =========================
+   CREATE MENU
+========================= */
+
+.create-menu {
+    display: none;
+
+    position: fixed;
+
+    top: 70px;
+
+    right: 18px;
+
+    width: 220px;
+
+    background: #111;
+
+    border: 1px solid #292929;
+
+    border-radius: 12px;
+
+    padding: 8px;
+
+    z-index: 9999;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.65);
+}
+
+.create-menu-title {
+    padding: 10px 12px;
+
+    color: #fff;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+.create-menu-item {
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: #fff;
+
+    text-align: left;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+.create-menu-item:hover {
+    background: #242424;
+}
     </style>
 </head>
 
@@ -701,13 +763,14 @@
         <div class="top-actions">
 
             <button
-                class="top-button"
-                id="uploadButton"
-                type="button"
-                title="Upload"
-            >
-                ⬆️
-            </button>
+    class="top-button"
+    id="uploadButton"
+    type="button"
+    title="Create"
+    onclick="openCreateMenu()"
+>
+    +
+</button>
 
             <button
                 class="top-button"
@@ -728,7 +791,60 @@
         </div>
 
     </header>
+<!-- =========================
+     CREATE MENU
+========================= -->
 
+<div
+    class="create-menu"
+    id="createMenu"
+>
+
+    <div class="create-menu-title">
+        Create
+    </div>
+
+
+    <button
+        class="create-menu-item"
+        onclick="openPostPicker()"
+    >
+        Posts
+    </button>
+
+
+    <button
+        class="create-menu-item"
+        onclick="showMessage('Reels will be available soon.')"
+    >
+        Reels
+    </button>
+
+
+    <button
+        class="create-menu-item"
+        onclick="showMessage('Live will be available soon.')"
+    >
+        Live
+    </button>
+
+
+    <button
+        class="create-menu-item"
+        onclick="showMessage('Highlights will be available soon.')"
+    >
+        Highlights
+    </button>
+
+
+    <button
+        class="create-menu-item"
+        onclick="showMessage('Story will be available soon.')"
+    >
+        Story
+    </button>
+
+</div>
 
     <!-- =========================
          SIDEBAR
@@ -1788,7 +1904,61 @@
             alert(message);
 
         }
+function openCreateMenu() {
 
+    const menu =
+        document.getElementById(
+            "createMenu"
+        );
+
+    if (!menu) {
+        return;
+    }
+
+    if (menu.style.display === "block") {
+
+        menu.style.display = "none";
+
+    } else {
+
+        menu.style.display = "block";
+
+    }
+}
+
+
+/* CLOSE CREATE MENU WHEN CLICKING OUTSIDE */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const menu =
+            document.getElementById(
+                "createMenu"
+            );
+
+        const button =
+            document.getElementById(
+                "uploadButton"
+            );
+
+        if (!menu || !button) {
+            return;
+        }
+
+        if (
+            !menu.contains(event.target) &&
+            !button.contains(event.target)
+        ) {
+
+            menu.style.display =
+                "none";
+
+        }
+
+    }
+);
     </script>
 
 </body>
