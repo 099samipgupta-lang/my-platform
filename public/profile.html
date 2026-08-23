@@ -396,99 +396,6 @@ button:active {
    PROFILE TABS
 ========================= */
 
-window.showProfileTab =
-function(
-    tabName,
-    button
-) {
-
-    /* REMOVE ACTIVE FROM ALL TABS */
-
-    document
-        .querySelectorAll(
-            ".profile-tab"
-        )
-        .forEach(
-            tab => {
-
-                tab.classList.remove(
-                    "active"
-                );
-
-            }
-        );
-
-
-    /* ACTIVATE SELECTED TAB */
-
-    button.classList.add(
-        "active"
-    );
-
-
-    /* ALL PROFILE SECTIONS */
-
-    const sections = {
-
-        videos:
-            "profileVideos",
-
-        shorts:
-            "profileShorts",
-
-        posts:
-            "profilePosts",
-
-        live:
-            "profileLive",
-
-        playlists:
-            "profilePlaylists"
-
-    };
-
-
-    /* HIDE ALL SECTIONS */
-
-    Object
-        .values(sections)
-        .forEach(
-            id => {
-
-                const section =
-                    document.getElementById(
-                        id
-                    );
-
-                if (section) {
-
-                    section.style.display =
-                        "none";
-
-                }
-
-            }
-        );
-
-
-    /* SHOW SELECTED SECTION */
-
-    const selectedSection =
-        document.getElementById(
-            sections[tabName]
-        );
-
-
-    if (selectedSection) {
-
-        selectedSection.style.display =
-            "block";
-
-    }
-
-};
-
-
 
 /* =========================
    POSTS LIST
@@ -2274,17 +2181,20 @@ function(
 
     const sections = {
 
-        posts:
-            "profilePosts",
-
         videos:
             "profileVideos",
 
-        reposts:
-            "profileReposts",
+        shorts:
+            "profileShorts",
 
-        tagged:
-            "profileTagged"
+        posts:
+            "profilePosts",
+
+        live:
+            "profileLive",
+
+        playlists:
+            "profilePlaylists"
 
     };
 
@@ -2294,19 +2204,34 @@ function(
         .forEach(
             id => {
 
-                document.getElementById(
-                    id
-                ).style.display =
-                    "none";
+                const section =
+                    document.getElementById(
+                        id
+                    );
+
+                if (section) {
+
+                    section.style.display =
+                        "none";
+
+                }
 
             }
         );
 
 
-    document.getElementById(
-        sections[tabName]
-    ).style.display =
-        "block";
+    const selectedSection =
+        document.getElementById(
+            sections[tabName]
+        );
+
+
+    if (selectedSection) {
+
+        selectedSection.style.display =
+            "block";
+
+    }
 
 };
 
