@@ -797,16 +797,66 @@ button:active {
         height: 52px;
     }
 
-    .profile-tab-label {
-        display: none;
-    }
-
     .post-grid {
         gap: 2px;
     }
 
 }
+/* =========================
+   PROFILE TABS
+========================= */
 
+.profile-tabs {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: #000;
+    border-bottom: 1px solid #292929;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-top: 30px;
+}
+
+.profile-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.profile-tab {
+    flex: 1;
+    min-width: 90px;
+    height: 52px;
+    padding: 0 18px;
+    border: none;
+    background: #000;
+    color: #888;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    position: relative;
+}
+
+.profile-tab:hover {
+    color: #fff;
+}
+
+.profile-tab.active {
+    color: #fff;
+}
+
+.profile-tab.active::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 18px;
+    right: 18px;
+    height: 2px;
+    background: #fff;
+}
+
+.profile-tab-label {
+    display: inline;
+}
 
 /* =========================
    SMALL PHONES
