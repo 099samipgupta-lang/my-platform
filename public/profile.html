@@ -470,28 +470,29 @@ button:active {
 
 
 /* =========================
-   POSTS GRID
+   POSTS LIST
 ========================= */
 
 .tab-content {
     margin-top: 4px;
 }
 
-.post-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 3px;
+.post-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .post-card {
-    position: relative;
+    display: flex;
 
-    aspect-ratio: 1 / 1;
+    width: 100%;
+
+    min-height: 110px;
 
     background: #181818;
+
+    border-bottom: 1px solid #292929;
 
     overflow: hidden;
 
@@ -500,13 +501,63 @@ button:active {
 
 .post-card img,
 .post-card video {
-    width: 100%;
+    width: 180px;
 
-    height: 100%;
+    height: 110px;
 
     object-fit: cover;
 
     display: block;
+
+    flex-shrink: 0;
+}
+
+/* POST INFORMATION */
+
+.post-info {
+    padding: 10px 14px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    min-width: 0;
+}
+
+.post-title {
+    font-size: 16px;
+
+    font-weight: 700;
+
+    color: white;
+
+    line-height: 1.3;
+
+    overflow: hidden;
+
+    display: -webkit-box;
+
+    -webkit-line-clamp: 2;
+
+    -webkit-box-orient: vertical;
+}
+
+.post-username {
+    color: #aaa;
+
+    font-size: 13px;
+
+    margin-top: 7px;
+}
+
+.post-meta {
+    color: #777;
+
+    font-size: 12px;
+
+    margin-top: 5px;
 }
 
 .post-placeholder {
@@ -1267,7 +1318,7 @@ button:active {
         >
 
             <div
-                class="post-grid"
+                class="post-list"
                 id="profilePostGrid"
             >
             </div>
@@ -1711,102 +1762,270 @@ function renderPostGrid(
 
 
     posts.forEach(
-        post => {
+    post => {
 
-            const card =
+        const card =
+            document.createElement(
+                "div"
+            );
+
+        card.className =
+            "post-card";
+
+
+        card.onclick =
+            function() {
+
+                if (
+                    post.video_url
+                ) {
+
+                    window.open(
+                        post.video_url,
+                        "_blank"
+                    );
+
+                }
+
+                else if (
+                    post.video_url
+                ) {
+
+                    window.open(
+                        post.video_url,
+                        "_blank"
+                    );
+
+                }
+
+            };
+
+
+        /* POST MEDIA */
+
+        let mediaHTML = "";
+
+
+        if (
+            post.thumbnail_url
+        ) {
+
+            mediaHTML =
+                `
+                <img
+                    src="${escapeHtml(
+                        post.thumbnail_url
+                    )}"
+                    alt=""
+                >
+                `;
+
+        }
+
+        else {
+
+            mediaHTML =
+                `
+                <div
+                    class="post-placeholder"
+                >
+                    ${escapeHtml(
+                        post.title ||
+                        "Post"
+                    )}
+                </div>
+                `;
+
+        }
+
+
+        /* POST USERNAME */
+
+        const username =
+            post.username ||
+            post.user_name ||
+            "User";
+
+
+        /* POST TITLE */
+
+        const title =
+            post.title ||
+            "Untitled post";
+
+
+        /* POST VIEWS */
+
+        const views =
+            Number(
+                post.views || 0
+            ).toLocaleString();
+
+
+        /* POST DATE */
+
+        let timeText =
+            "Recently";
+
+
+        if (
+            post.created_at
+        ) {
+
+            const created =
+                new Date(
+                    post.created_at
+                );
+
+            const now =
+                new Date();
+
+
+            const difference =
+                now.getTime() -
+                created.getTime();
+
+
+            const minutes =
+                Math.floor(
+                    difference /
+                    (1000 * 60)
+                );
+
+
+            const hours =
+                Math.floor(
+                    minutes / 60
+                );
+
+
+            const days =
+                Math.floor(
+                    hours / 24
+                );
+
+
+            if (
+                days > 0
+            ) {
+
+                timeText =
+                    days +
+                    (
+                        days === 1
+                            ? " day ago"
+                            : " days ago"
+                    );
+
+            }
+
+            else if (
+                hours > 0
+            ) {
+
+                timeText =
+                    hours +
+                    (
+                        hours === 1
+                            ? " hour ago"
+                            : " hours ago"
+                    );
+
+            }
+
+            else if (
+                minutes > 0
+            ) {
+
+                timeText =
+                    minutes +
+                    (
+                        minutes === 1
+                            ? " minute ago"
+                            : " minutes ago"
+                    );
+
+            }
+
+            else {
+
+                timeText =
+                    "Just now";
+
+            }
+
+        }
+
+
+        /* BUILD POST */
+
+        card.innerHTML =
+            `
+            ${mediaHTML}
+
+            <div
+                class="post-info"
+            >
+
+                <div
+                    class="post-title"
+                >
+                    ${escapeHtml(
+                        title
+                    )}
+                </div>
+
+                <div
+                    class="post-username"
+                >
+                    @${escapeHtml(
+                        username
+                    )}
+                </div>
+
+                <div
+                    class="post-meta"
+                >
+                    ${views} views
+                    ·
+                    ${timeText}
+                </div>
+
+            </div>
+            `;
+
+
+        /* VIDEO INDICATOR */
+
+        if (
+            post.content_type ===
+            "video"
+        ) {
+
+            const indicator =
                 document.createElement(
                     "div"
                 );
 
+            indicator.className =
+                "video-indicator";
 
-            card.className =
-                "post-card";
+            indicator.textContent =
+                "▶";
 
-
-            card.onclick =
-                function() {
-
-                    if (
-                        post.video_url
-                    ) {
-
-                        window.open(
-                            post.video_url,
-                            "_blank"
-                        );
-
-                    }
-
-                };
-
-
-            const thumbnail =
-                post.thumbnail_url;
-
-
-            if (
-                thumbnail
-            ) {
-
-                card.innerHTML =
-                    `
-                    <img
-                        src="${escapeHtml(
-                            thumbnail
-                        )}"
-                        alt=""
-                    >
-                    `;
-
-            } else {
-
-                card.innerHTML =
-                    `
-                    <div
-                        class="post-placeholder"
-                    >
-                        ${escapeHtml(
-                            post.title ||
-                            "Post"
-                        )}
-                    </div>
-                    `;
-
-            }
-
-
-            if (
-                post.content_type ===
-                "video"
-            ) {
-
-                const indicator =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                indicator.className =
-                    "video-indicator";
-
-
-                indicator.textContent =
-                    "▶";
-
-
-                card.appendChild(
-                    indicator
-                );
-
-            }
-
-
-            grid.appendChild(
-                card
+            card.appendChild(
+                indicator
             );
 
         }
-    );
+
+
+        grid.appendChild(
+            card
+        );
+
+    }
+);
 
 }
 
