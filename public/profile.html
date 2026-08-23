@@ -715,7 +715,34 @@ button:active {
 .profile-menu-item:hover {
     background: #242424;
 }
+/* =========================
+   PROFILE MENU TITLE
+========================= */
 
+.profile-menu-title {
+    padding: 10px 12px 8px;
+
+    color: #fff;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    text-align: left;
+}
+
+
+/* =========================
+   PROFILE MENU DIVIDER
+========================= */
+
+.profile-menu-divider {
+    height: 1px;
+
+    background: #333;
+
+    margin: 7px 4px;
+}
 .profile-menu-item.logout-item {
     color: #ff5270;
 }
@@ -957,34 +984,75 @@ button:active {
 ========================= -->
 
 <div
-    class="profile-menu-panel"
-    id="profileMenuPanel"
+    class="profile-menu-title"
 >
-
-    <button
-        class="profile-menu-item"
-        onclick="showEdit(); toggleProfileMenu();"
-    >
-        Edit profile
-    </button>
-
-
-    <button
-        class="profile-menu-item"
-        onclick="shareProfile(); toggleProfileMenu();"
-    >
-        Share profile
-    </button>
-
-
-    <button
-        class="profile-menu-item logout-item"
-        onclick="logout()"
-    >
-        Log out
-    </button>
-
+    Activities
 </div>
+
+<button
+    class="profile-menu-item"
+    onclick="window.location.href='/history.html'"
+>
+    History
+</button>
+
+<button
+    class="profile-menu-item"
+    onclick="window.location.href='/liked-videos.html'"
+>
+    Liked Videos
+</button>
+
+<button
+    class="profile-menu-item"
+    onclick="window.location.href='/saved-videos.html'"
+>
+    Saved Videos
+</button>
+
+<button
+    class="profile-menu-item"
+    onclick="window.location.href='/watch-later.html'"
+>
+    Watch Later
+</button>
+
+<button
+    class="profile-menu-item"
+    onclick="window.location.href='/playlists.html'"
+>
+    Playlists
+</button>
+
+<button
+    class="profile-menu-item"
+    onclick="window.location.href='/your-videos.html'"
+>
+    Your Videos
+</button>
+
+<div class="profile-menu-divider"></div>
+
+<button
+    class="profile-menu-item"
+    onclick="showEdit(); toggleProfileMenu();"
+>
+    Edit profile
+</button>
+
+<button
+    class="profile-menu-item"
+    onclick="shareProfile(); toggleProfileMenu();"
+>
+    Share profile
+</button>
+
+<button
+    class="profile-menu-item logout-item"
+    onclick="logout()"
+>
+    Log out
+</button>
 
 
 <!-- =========================
