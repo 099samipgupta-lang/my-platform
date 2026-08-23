@@ -1953,8 +1953,89 @@ document.addEventListener(
 
     }
 );
-    </script>
+/* =========================
+   POST IMAGE PICKER
+========================= */
 
+function openPostPicker() {
+
+    const menu =
+        document.getElementById(
+            "createMenu"
+        );
+
+    const picker =
+        document.getElementById(
+            "postImagePicker"
+        );
+
+    if (!picker) {
+        return;
+    }
+
+    if (menu) {
+        menu.style.display =
+            "none";
+    }
+
+    picker.value = "";
+
+    picker.click();
+}
+
+
+/* =========================
+   POST IMAGE SELECTED
+========================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        const picker =
+            document.getElementById(
+                "postImagePicker"
+            );
+
+        if (!picker) {
+            return;
+        }
+
+        picker.addEventListener(
+            "change",
+            function() {
+
+                if (
+                    picker.files &&
+                    picker.files.length > 0
+                ) {
+
+                    const selectedImage =
+                        picker.files[0];
+
+                    console.log(
+                        "Post image selected:",
+                        selectedImage.name
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);    
+</script>
+<!-- =========================
+     POST IMAGE PICKER
+========================= -->
+
+<input
+    type="file"
+    id="postImagePicker"
+    accept="image/*"
+    style="display:none;"
+>
 </body>
 </html>
 
