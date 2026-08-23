@@ -392,81 +392,102 @@ button:active {
     color: #fff;
 }
 
-
 /* =========================
    PROFILE TABS
 ========================= */
 
-.profile-tabs {
-    margin-top: 42px;
+window.showProfileTab =
+function(
+    tabName,
+    button
+) {
 
-    display: grid;
+    /* REMOVE ACTIVE FROM ALL TABS */
 
-    grid-template-columns:
-        repeat(4, 1fr);
+    document
+        .querySelectorAll(
+            ".profile-tab"
+        )
+        .forEach(
+            tab => {
 
-    border-top: 1px solid #292929;
+                tab.classList.remove(
+                    "active"
+                );
 
-    border-bottom: 1px solid #292929;
-}
+            }
+        );
 
-.profile-tab {
-    height: 58px;
 
-    border: none;
+    /* ACTIVATE SELECTED TAB */
 
-    background: transparent;
+    button.classList.add(
+        "active"
+    );
 
-    color: #777;
 
-    cursor: pointer;
+    /* ALL PROFILE SECTIONS */
 
-    display: flex;
+    const sections = {
 
-    flex-direction: column;
+        videos:
+            "profileVideos",
 
-    align-items: center;
+        shorts:
+            "profileShorts",
 
-    justify-content: center;
+        posts:
+            "profilePosts",
 
-    gap: 5px;
+        live:
+            "profileLive",
 
-    position: relative;
-}
+        playlists:
+            "profilePlaylists"
 
-.profile-tab-icon {
-    font-size: 20px;
+    };
 
-    line-height: 1;
-}
 
-.profile-tab-label {
-    font-size: 10px;
+    /* HIDE ALL SECTIONS */
 
-    text-transform: uppercase;
+    Object
+        .values(sections)
+        .forEach(
+            id => {
 
-    letter-spacing: .3px;
-}
+                const section =
+                    document.getElementById(
+                        id
+                    );
 
-.profile-tab.active {
-    color: white;
-}
+                if (section) {
 
-.profile-tab.active::after {
-    content: "";
+                    section.style.display =
+                        "none";
 
-    position: absolute;
+                }
 
-    bottom: 0;
+            }
+        );
 
-    left: 25%;
 
-    right: 25%;
+    /* SHOW SELECTED SECTION */
 
-    height: 2px;
+    const selectedSection =
+        document.getElementById(
+            sections[tabName]
+        );
 
-    background: white;
-}
+
+    if (selectedSection) {
+
+        selectedSection.style.display =
+            "block";
+
+    }
+
+};
+
 
 
 /* =========================
@@ -1240,72 +1261,56 @@ button:active {
 
         <section class="profile-tabs">
 
-
-            <button
-                class="profile-tab active"
-                onclick="showProfileTab('posts', this)"
-            >
-
-                <span class="profile-tab-icon">
-                    ▦
-                </span>
-
-                <span class="profile-tab-label">
-                    Posts
-                </span>
-
-            </button>
+    <button
+        class="profile-tab"
+        onclick="showProfileTab('videos', this)"
+    >
+        <span class="profile-tab-label">
+            Videos
+        </span>
+    </button>
 
 
-            <button
-                class="profile-tab"
-                onclick="showProfileTab('videos', this)"
-            >
-
-                <span class="profile-tab-icon">
-                    ▶
-                </span>
-
-                <span class="profile-tab-label">
-                    Videos
-                </span>
-
-            </button>
+    <button
+        class="profile-tab"
+        onclick="showProfileTab('shorts', this)"
+    >
+        <span class="profile-tab-label">
+            Shorts
+        </span>
+    </button>
 
 
-            <button
-                class="profile-tab"
-                onclick="showProfileTab('reposts', this)"
-            >
-
-                <span class="profile-tab-icon">
-                    🔁
-                </span>
-
-                <span class="profile-tab-label">
-                    Reposts
-                </span>
-
-            </button>
+    <button
+        class="profile-tab active"
+        onclick="showProfileTab('posts', this)"
+    >
+        <span class="profile-tab-label">
+            Posts
+        </span>
+    </button>
 
 
-            <button
-                class="profile-tab"
-                onclick="showProfileTab('tagged', this)"
-            >
-
-                <span class="profile-tab-icon">
-                    🏷
-                </span>
-
-                <span class="profile-tab-label">
-                    Tagged
-                </span>
-
-            </button>
+    <button
+        class="profile-tab"
+        onclick="showProfileTab('live', this)"
+    >
+        <span class="profile-tab-label">
+            Live
+        </span>
+    </button>
 
 
-        </section>
+    <button
+        class="profile-tab"
+        onclick="showProfileTab('playlists', this)"
+    >
+        <span class="profile-tab-label">
+            Playlists
+        </span>
+    </button>
+
+</section>
 
 
         <!-- =========================
@@ -1346,70 +1351,76 @@ button:active {
 
 
         <!-- =========================
-             REPOSTS
-        ========================= -->
+     SHORTS
+========================= -->
 
-        <section
-            class="tab-content"
-            id="profileReposts"
-            style="display:none;"
-        >
+<section
+    class="tab-content"
+    id="profileShorts"
+    style="display:none;"
+>
 
-            <div
-                class="empty-state"
-            >
+    <div
+        class="post-grid"
+        id="profileShortsGrid"
+    >
+    </div>
 
-                <div class="empty-icon">
-                    🔁
-                </div>
-
-                <div class="empty-title">
-                    No reposts yet
-                </div>
-
-                <div class="empty-description">
-                    Reposted content will appear here.
-                </div>
-
-            </div>
-
-        </section>
+</section>
 
 
-        <!-- =========================
-             TAGGED
-        ========================= -->
+<!-- =========================
+     LIVE
+========================= -->
 
-        <section
-            class="tab-content"
-            id="profileTagged"
-            style="display:none;"
-        >
+<section
+    class="tab-content"
+    id="profileLive"
+    style="display:none;"
+>
 
-            <div
-                class="empty-state"
-            >
+    <div
+        class="empty-state"
+    >
 
-                <div class="empty-icon">
-                    🏷
-                </div>
+        <div class="empty-title">
+            No live videos yet
+        </div>
 
-                <div class="empty-title">
-                    No tagged posts yet
-                </div>
-
-                <div class="empty-description">
-                    Posts you're tagged in will appear here.
-                </div>
-
-            </div>
-
-        </section>
-
+        <div class="empty-description">
+            Your live videos will appear here.
+        </div>
 
     </div>
 
-</main>
+</section>
+
+
+<!-- =========================
+     PLAYLISTS
+========================= -->
+
+<section
+    class="tab-content"
+    id="profilePlaylists"
+    style="display:none;"
+>
+
+    <div
+        class="empty-state"
+    >
+
+        <div class="empty-title">
+            No playlists yet
+        </div>
+
+        <div class="empty-description">
+            Your playlists will appear here.
+        </div>
+
+    </div>
+
+</section>
 
 
 <!-- =========================
