@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MyPlatform</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #0b0b0b;
+            color: white;
+            font-family: Arial, sans-serif;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-bottom: 1px solid #222;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .logo span {
+            color: #aaa;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            flex: 1;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            padding: 70px 30px;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        /* =========================
+           OPTIONS
+        ========================= */
+
+        .options {
+            width: 100%;
+            max-width: 1100px;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 24px;
+        }
+
+        .option {
+            min-height: 280px;
+
+            background: #121212;
+            border: 1px solid #2a2a2a;
+            border-radius: 18px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .option:hover {
+            transform: translateY(-6px);
+            background: #181818;
+            border-color: #555;
+        }
+
+        .icon {
+            font-size: 55px;
+            margin-bottom: 25px;
+        }
+
+        .option-title {
+            font-size: 22px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .option-description {
+            margin-top: 12px;
+            color: #888;
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 750px) {
+
+            .main {
+                padding: 45px 15px;
+            }
+
+            .title {
+                font-size: 28px;
+                margin-bottom: 30px;
+            }
+
+            .options {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+
+            .option {
+                min-height: 190px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+
+        <div class="logo">
+            My<span>Platform</span>
+        </div>
+
+    </header>
+
+
+    <main class="main">
+
+        <div class="title">
+            What do you want to create?
+        </div>
+
+
+        <div class="options">
+
+            <!-- PERSONAL AI -->
+
+            <div
+                class="option"
+                onclick="showMessage('Personal AI workspace coming soon.')"
+            >
+
+                <div class="icon">
+                    🤖
+                </div>
+
+                <div class="option-title">
+                    Create your Personal AI
+                </div>
+
+                <div class="option-description">
+                    Build an AI designed around you.
+                </div>
+
+            </div>
+
+
+            <!-- GAME -->
+
+            <div
+                class="option"
+                onclick="showMessage('Game creation workspace coming soon.')"
+            >
+
+                <div class="icon">
+                    🎮
+                </div>
+
+                <div class="option-title">
+                    Build your Game
+                </div>
+
+                <div class="option-description">
+                    Create your own interactive world.
+                </div>
+
+            </div>
+
+
+            <!-- 3D PROJECT -->
+
+            <div
+                class="option"
+                onclick="showMessage('3D project workspace coming soon.')"
+            >
+
+                <div class="icon">
+                    🧊
+                </div>
+
+                <div class="option-title">
+                    Build your 3D Project
+                </div>
+
+                <div class="option-description">
+                    Create and explore 3D experiences.
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        function showMessage(message) {
+            alert(message);
+        }
+
+    </script>
+
+</body>
+</html>
