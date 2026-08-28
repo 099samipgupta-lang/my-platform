@@ -62,7 +62,7 @@ app.get("/", (req, res) => {
         path.join(
             __dirname,
             "public",
-            "index.html"
+            "home.html"
         )
     );
 
