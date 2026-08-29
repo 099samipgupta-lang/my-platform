@@ -219,6 +219,79 @@
 .nav-item:hover {
     color: white;
 }
+
+/* =========================
+   YOUR AI TUTORS
+========================= */
+
+.ai-tutors-section {
+    width: 100%;
+    max-width: 1100px;
+    margin-top: 50px;
+}
+
+.ai-tutors-section h2 {
+    margin: 0 0 20px;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.ai-tutors {
+    width: 100%;
+
+    display: flex;
+    gap: 20px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    padding: 10px 4px 20px;
+
+    scrollbar-width: none;
+}
+
+.ai-tutors::-webkit-scrollbar {
+    display: none;
+}
+
+.ai-card {
+    flex: 0 0 220px;
+    min-height: 150px;
+
+    background: #121212;
+    border: 1px solid #2a2a2a;
+    border-radius: 18px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.ai-card:hover {
+    transform: translateY(-4px);
+    background: #181818;
+    border-color: #555;
+}
+
+.ai-icon {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.ai-name {
+    font-size: 20px;
+    font-weight: 600;
+}
     </style>
 </head>
 
@@ -308,7 +381,39 @@
             </div>
 
         </div>
+<!-- =========================
+     YOUR AI TUTORS
+========================= -->
 
+<section class="ai-tutors-section">
+
+    <h2>Your AI Tutors</h2>
+
+    <div class="ai-tutors">
+
+        <div class="ai-card">
+            <div class="ai-icon">🤖</div>
+            <div class="ai-name">AI-1</div>
+        </div>
+
+        <div class="ai-card">
+            <div class="ai-icon">🤖</div>
+            <div class="ai-name">AI-2</div>
+        </div>
+
+        <div class="ai-card">
+            <div class="ai-icon">🤖</div>
+            <div class="ai-name">AI-3</div>
+        </div>
+
+        <div class="ai-card">
+            <div class="ai-icon">🤖</div>
+            <div class="ai-name">AI-4</div>
+        </div>
+
+    </div>
+
+</section>
     </main>
 
 
